@@ -1,4 +1,3 @@
-
 public class Room
 {
     private final String aDescription;
@@ -7,31 +6,46 @@ public class Room
     public Room aSouthExit;
     public Room aWestExit;
 
-    public Room(final String pDescripion){
+    public Room(final String pDescripion)
+    {
         this.aDescription = pDescripion;
     }
 
+    public void setExits(final Room pNorth, final Room pSouth, final Room pEast, final Room pWest)
+    {
+        this.aNorthExit = pNorth;
+        this.aEastExit = pEast;
+        this.aSouthExit = pSouth;
+        this.aWestExit = pWest;
+    }
+
+    public Room getExit(String direction)
+    {
+        return switch (direction) {
+            case "north" -> this.aNorthExit;
+            case "south" -> this.aSouthExit;
+            case "east" -> this.aEastExit;
+            case "west" -> this.aWestExit;
+            default -> null;
+        };
+    }
 
     public String getDescription()
     {
         return this.aDescription;
     }
 
-    public void setExits(final Room pNorth, final Room pSouth, final Room pEast, final Room pWest){
-        this.aNorthExit = pNorth;
-        this.aEastExit  =  pEast;
-        this.aSouthExit = pSouth;
-        this.aWestExit  =  pWest;
-    }
-
-    public Room getExit(String direction)
+    public String getExitString()
     {
-        if (direction.equals("north")) return this.aNorthExit;
-        if (direction.equals("south")) return this.aSouthExit;
-        if (direction.equals("east"))  return this.aEastExit;
-        if (direction.equals("west"))  return this.aWestExit;
+        StringBuilder vExits = new StringBuilder();
 
-        return null;
+        if (this.aNorthExit != null) vExits.append("north ");
+        if (this.aEastExit  != null) vExits.append("east ");
+        if (this.aSouthExit != null) vExits.append("south ");
+        if (this.aWestExit  != null) vExits.append("west ");
+
+        return vExits.toString();
     }
+
 
 } // Room
