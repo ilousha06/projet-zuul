@@ -104,33 +104,16 @@ public class Game
         System.out.println("Welcome to the world of Zuul!");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
-        System.out.println(this.aCurrentRoom.getDescription());
-        System.out.print("Exits: ");
-        this.printExits();
+        printLocationInfo();
     }
 
-    private boolean processCommand(Command pCommand)
+    private void printExits()
     {
-        if (pCommand.isUnknown()) {
-            System.out.println("I don't know what you mean...");
-            return false;
-        }
-
-        String vCommandWord = pCommand.getCommandWord();
-
-        if (vCommandWord.equals("help")) {
-            this.printHelp();
-            return false;
-        }
-        else if (vCommandWord.equals("go")) {
-            this.goRoom(pCommand);
-            return false;
-        }
-        else if (vCommandWord.equals("quit")) {
-            return this.quit(pCommand);
-        }
-
-        return false;
+        if (this.aCurrentRoom.aNorthExit != null) System.out.print("north ");
+        if (this.aCurrentRoom.aEastExit  != null) System.out.print("east ");
+        if (this.aCurrentRoom.aSouthExit != null) System.out.print("south ");
+        if (this.aCurrentRoom.aWestExit  != null) System.out.print("west ");
+        System.out.println();
     }
 
     private void printHelp()
@@ -140,13 +123,10 @@ public class Game
         System.out.println("Your command words are: go help quit");
     }
 
-    private boolean quit(Command pCommand)
-    {
-        if (pCommand.hasSecondWord()) {
-            System.out.println("Quit what?");
-            return false;
-        }
-        return true;
+    private void printLocationInfo(){
+        System.out.println(this.aCurrentRoom.getDescription());
+        System.out.print("Exits: ");
+        this.printExits();
     }
 
     private void goRoom(Command pCommand)
@@ -182,17 +162,42 @@ public class Game
         }
 
         this.aCurrentRoom = vNextRoom;
-        System.out.println(this.aCurrentRoom.getDescription());
-        System.out.print("Exits: ");
-        this.printExits();
+        printLocationInfo();
     }
 
-    private void printExits()
+    private boolean processCommand(Command pCommand)
     {
-        if (this.aCurrentRoom.aNorthExit != null) System.out.print("north ");
-        if (this.aCurrentRoom.aEastExit  != null) System.out.print("east ");
-        if (this.aCurrentRoom.aSouthExit != null) System.out.print("south ");
-        if (this.aCurrentRoom.aWestExit  != null) System.out.print("west ");
-        System.out.println();
+        if (pCommand.isUnknown()) {
+            System.out.println("I don't know what you mean...");
+            return false;
+        }
+
+        String vCommandWord = pCommand.getCommandWord();
+
+        switch (vCommandWord) {
+            case "help" -> {
+                this.printHelp();
+                return false;
+            }
+            case "go" -> {
+                this.goRoom(pCommand);
+                return false;
+            }
+            case "quit" -> {
+                return this.quit(pCommand);
+            }
+        }
+
+        return false;
     }
+
+    private boolean quit(Command pCommand)
+    {
+        if (pCommand.hasSecondWord()) {
+            System.out.println("Quit what?");
+            return false;
+        }
+        return true;
+    }
+
 }
