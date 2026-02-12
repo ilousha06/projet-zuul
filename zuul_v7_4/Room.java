@@ -17,10 +17,21 @@ public class Room
         return this.aDescription;
     }
 
-    public void setExits(final Room pNorth,final Room pEast,final Room pSouth,final Room pWest){
+    public void setExits(final Room pNorth, final Room pSouth, final Room pEast, final Room pWest){
         this.aNorthExit = pNorth;
         this.aEastExit  =  pEast;
         this.aSouthExit = pSouth;
         this.aWestExit  =  pWest;
     }
+
+    public Room getExit(String direction)
+    {
+        if (direction.equals("north")) return this.aNorthExit;
+        if (direction.equals("south")) return this.aSouthExit;
+        if (direction.equals("east"))  return this.aEastExit;
+        if (direction.equals("west"))  return this.aWestExit;
+
+        return null;
+    }
+
 } // Room

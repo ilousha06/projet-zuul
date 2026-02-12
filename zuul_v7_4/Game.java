@@ -139,23 +139,8 @@ public class Game
         String vDirection = pCommand.getSecondWord();
         Room vNextRoom = null;
 
-        if (vDirection.equals("north")) {
-            vNextRoom = this.aCurrentRoom.aNorthExit;
-        }
-        else if (vDirection.equals("east")) {
-            vNextRoom = this.aCurrentRoom.aEastExit;
-        }
-        else if (vDirection.equals("south")) {
-            vNextRoom = this.aCurrentRoom.aSouthExit;
-        }
-        else if (vDirection.equals("west")) {
-            vNextRoom = this.aCurrentRoom.aWestExit;
-        }
-        else {
-            System.out.println("Unknown direction !");
-            return;
-        }
-
+        vNextRoom = this.aCurrentRoom.getExit(vDirection);
+        
         if (vNextRoom == null) {
             System.out.println("There is no door !");
             return;
