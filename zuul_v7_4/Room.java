@@ -1,33 +1,27 @@
+import java.util.HashMap;
+
 public class Room
 {
     private final String aDescription;
-    public Room aNorthExit;
-    public Room aEastExit;
-    public Room aSouthExit;
-    public Room aWestExit;
+    private final HashMap<String, Room> aExits;
+
+
 
     public Room(final String pDescripion)
     {
         this.aDescription = pDescripion;
+        this.aExits = new HashMap<>();
+
     }
 
-    public void setExits(final Room pNorth, final Room pSouth, final Room pEast, final Room pWest)
+    public void setExit(String direction, Room neighbor)
     {
-        this.aNorthExit = pNorth;
-        this.aEastExit = pEast;
-        this.aSouthExit = pSouth;
-        this.aWestExit = pWest;
+        this.aExits.put(direction, neighbor);
     }
 
-    public Room getExit(String direction)
+    public Room getExit(final String direction)
     {
-        return switch (direction) {
-            case "north" -> this.aNorthExit;
-            case "south" -> this.aSouthExit;
-            case "east" -> this.aEastExit;
-            case "west" -> this.aWestExit;
-            default -> null;
-        };
+        return this.aExits.get(direction);
     }
 
     public String getDescription()
@@ -39,13 +33,11 @@ public class Room
     {
         StringBuilder vExits = new StringBuilder();
 
-        if (this.aNorthExit != null) vExits.append("north ");
-        if (this.aEastExit  != null) vExits.append("east ");
-        if (this.aSouthExit != null) vExits.append("south ");
-        if (this.aWestExit  != null) vExits.append("west ");
+        for (String direction : this.aExits.keySet()) {
+            vExits.append(direction).append(" ");
+        }
 
         return vExits.toString();
     }
-
 
 } // Room

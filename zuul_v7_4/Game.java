@@ -1,9 +1,9 @@
-
+import java.util.HashMap;
 
 public class Game
 {
     private Room aCurrentRoom;
-    private Parser aParser;
+    private final Parser aParser;
 
     public Game()
     {
@@ -14,7 +14,7 @@ public class Game
 
     private void createRooms()
     {
-        Room vDortoirEst        = new Room("dans le dortoir est reserve aux soeurs");  // SPAWN
+        Room vDortoirEst        = new Room("dans le dortoir est reserve aux soeurs");
         Room vDortoirOuest      = new Room("dans le dortoir ouest plus silencieux");
         Room vRefectoire        = new Room("dans le refectoire commun");
         Room vCuisine           = new Room("dans la cuisine ou les repas sont prepares");
@@ -22,68 +22,116 @@ public class Game
         Room vCourIntern        = new Room("dans la cour interieure entouree de murs");
         Room vJardinCentral     = new Room("dans le jardin central sombre");
         Room vPuitsAncien       = new Room("pres du puits ancien en pierre");
-        Room vSerreCultivee     = new Room("dans la serre cultivee abandonnee envahie par les plantes");
+        Room vSalleCachee       = new Room("dans une salle cachee sous le puits");
+        Room vSerreCultivee     = new Room("dans la serre cultivee abandonnee");
         Room vLabyrintheVeg     = new Room("dans le labyrinthe vegetal inquietant");
         Room vAutelExtern       = new Room("pres de l'autel exterieur en pierre");
         Room vCabaneJardin      = new Room("dans la cabane du jardinier");
         Room vChapPrinci        = new Room("dans la chapelle principale silencieuse");
-        Room vBiblioSacree      = new Room("dans la bibliotheque sacree remplie d ouvrages");
-        Room vArchiInterd       = new Room("dans les archives interdites sous surveillance");
-        Room vCloitreIntern     = new Room("dans le cloitre interieur calme");
-        Room vHallCeremonies    = new Room("dans le hall des ceremonies imposant");
-        Room vSalleSerments     = new Room("dans la salle des serments solemnels");
-        Room vBureauMatriarche  = new Room("dans le bureau prive de la matriarche");
-        Room vAntichambreSacree = new Room("dans l'antichambre sacree gardee");
-        Room vSalleRituels      = new Room("dans la salle des rituels obscurs");
-        Room vSanctuaireIntern  = new Room("dans le sanctuaire interieur interdit");
-        Room vCrypteAncienne    = new Room("dans la crypte ancienne souterraine");
-        Room vChambreReliques   = new Room("dans la chambre des reliques anciennes");
-        Room vEscalierCave      = new Room("dans l'escalier menant a la cave");
-        Room vCavePrincipale    = new Room("dans la cave principale humide");
-        Room vPorteScellee      = new Room("devant la porte scellee par des cadenas");
-        Room vSortieExtern      = new Room("devant la sortie vers l'exterieur");        // Exit
+        Room vBiblioSacree      = new Room("dans la bibliotheque sacree");
+        Room vArchiInterd       = new Room("dans les archives interdites");
+        Room vCloitreIntern     = new Room("dans le cloitre interieur");
+        Room vHallCeremonies    = new Room("dans le hall des ceremonies");
+        Room vSalleSerments     = new Room("dans la salle des serments");
+        Room vBureauMatriarche  = new Room("dans le bureau de la matriarche");
+        Room vAntichambreSacree = new Room("dans l antichambre sacree");
+        Room vSalleRituels      = new Room("dans la salle des rituels");
+        Room vSanctuaireIntern  = new Room("dans le sanctuaire interieur");
+        Room vCrypteAncienne    = new Room("dans la crypte ancienne");
+        Room vChambreReliques   = new Room("dans la chambre des reliques");
+        Room vEscalierCave      = new Room("dans l escalier menant a la cave");
+        Room vCavePrincipale    = new Room("dans la cave principale");
+        Room vPorteScellee      = new Room("devant la porte scellee");
+        Room vSortieExtern      = new Room("devant la sortie exterieure");
 
         // HUB CENTRAL
-        vCourIntern.setExits(vDortoirEst, vJardinCentral, vHallCeremonies, vRefectoire);
-        vDortoirEst.setExits(null, vCourIntern, vDortoirOuest, vInfirmerie);
-        vDortoirOuest.setExits(null, null, null, vDortoirEst);
-        vInfirmerie.setExits(null, null, vDortoirEst, null);
-        vRefectoire.setExits(null, null, vCourIntern, vCuisine);
-        vCuisine.setExits(null, null, vRefectoire, null);
+        vCourIntern.setExit("north", vDortoirOuest);
+        vCourIntern.setExit("south", vJardinCentral);
+        vCourIntern.setExit("east",  vHallCeremonies);
+        vCourIntern.setExit("west",  vRefectoire);
+
+        vDortoirEst.setExit("west",  vDortoirOuest);
+        vDortoirOuest.setExit("south", vCourIntern);
+        vDortoirOuest.setExit("west", vInfirmerie);
+        vDortoirOuest.setExit("east", vDortoirEst);
+
+        vInfirmerie.setExit("east", vDortoirOuest);
+
+        vRefectoire.setExit("east", vCourIntern);
+        vRefectoire.setExit("north", vCuisine);
+        vCuisine.setExit("west", vRefectoire);
 
         // ZONE JARDIN
-        vJardinCentral.setExits(vCourIntern, vAutelExtern, vPuitsAncien, vLabyrintheVeg);
-        vPuitsAncien.setExits(null, null, null, vJardinCentral);
-        vLabyrintheVeg.setExits(null, null, vJardinCentral, vCabaneJardin);
-        vCabaneJardin.setExits(null, null, vLabyrintheVeg, null);
-        vAutelExtern.setExits(vJardinCentral, vSerreCultivee, null, null);
-        vSerreCultivee.setExits(vAutelExtern, null, null, null);
+        vJardinCentral.setExit("north", vCourIntern);
+        vJardinCentral.setExit("south", vPuitsAncien);
+        vJardinCentral.setExit("east",  vAutelExtern);
+        vJardinCentral.setExit("west",  vLabyrintheVeg);
 
-        // ZONE RELIGIEUX
-        vHallCeremonies.setExits(vSalleSerments, null, vChapPrinci, vCourIntern);
-        vSalleSerments.setExits(vAntichambreSacree, vHallCeremonies, null, null);
-        vAntichambreSacree.setExits(vBureauMatriarche, vSalleSerments, null, null);
-        vBureauMatriarche.setExits(null, vAntichambreSacree, null, null);
-        vChapPrinci.setExits(vBiblioSacree, vSanctuaireIntern, vCloitreIntern, vHallCeremonies);
-        vCloitreIntern.setExits(null, null, null, vChapPrinci);
-        vBiblioSacree.setExits(vArchiInterd, vChapPrinci, null, null);
-        vArchiInterd.setExits(null, vBiblioSacree, null, null);
+        vPuitsAncien.setExit("north", vJardinCentral);
 
-        // ZONE OCCULT
-        vSanctuaireIntern.setExits(vChapPrinci, vSalleRituels, vCrypteAncienne, null);
-        vSalleRituels.setExits(vSanctuaireIntern, null, null, null);
-        vCrypteAncienne.setExits(null, vEscalierCave, vChambreReliques, vSanctuaireIntern);
-        vChambreReliques.setExits(null, null, null, vCrypteAncienne);
+        vPuitsAncien.setExit("down", vSalleCachee); // Verticalité du puits
+        vSalleCachee.setExit("up", vPuitsAncien); // Verticalité du puits
+
+        vLabyrintheVeg.setExit("east", vJardinCentral);
+        vLabyrintheVeg.setExit("west", vCabaneJardin);
+
+        vCabaneJardin.setExit("east", vLabyrintheVeg);
+        vAutelExtern.setExit("west", vJardinCentral);
+        vAutelExtern.setExit("south", vSerreCultivee);
+        vSerreCultivee.setExit("north", vAutelExtern);
+
+        // ZONE RELIGIEUSE
+        vHallCeremonies.setExit("west", vCourIntern);
+        vHallCeremonies.setExit("north", vSalleSerments);
+        vHallCeremonies.setExit("south", vChapPrinci);
+
+        vSalleSerments.setExit("south", vHallCeremonies);
+        vSalleSerments.setExit("east", vAntichambreSacree);
+
+        vAntichambreSacree.setExit("south", vSalleSerments);
+        vAntichambreSacree.setExit("north", vBureauMatriarche);
+
+        vBureauMatriarche.setExit("south", vAntichambreSacree);
+
+        vChapPrinci.setExit("north", vHallCeremonies);
+        vChapPrinci.setExit("south", vSanctuaireIntern);
+        vChapPrinci.setExit("east", vBiblioSacree);
+        vChapPrinci.setExit("west", vCloitreIntern);
+
+        vCloitreIntern.setExit("east", vChapPrinci);
+        vBiblioSacree.setExit("west", vChapPrinci);
+        vBiblioSacree.setExit("north", vArchiInterd);
+        vArchiInterd.setExit("south", vBiblioSacree);
+
+        // ZONE OCCULTE
+        vSanctuaireIntern.setExit("north", vChapPrinci);
+        vSanctuaireIntern.setExit("south", vCrypteAncienne);
+        vSanctuaireIntern.setExit("east", vSalleRituels);
+
+        vSalleRituels.setExit("west", vSanctuaireIntern);
+
+        vCrypteAncienne.setExit("north", vSanctuaireIntern);
+        vCrypteAncienne.setExit("east", vChambreReliques);
+
+        vChambreReliques.setExit("west", vCrypteAncienne);
 
         // ZONE CAVE
+        vCrypteAncienne.setExit("down", vEscalierCave);
+        vEscalierCave.setExit("up", vCrypteAncienne);
 
-        vEscalierCave.setExits(vCrypteAncienne, vCavePrincipale, null, null);
-        vCavePrincipale.setExits(vEscalierCave, vPorteScellee, null, null);
-        vPorteScellee.setExits(vCavePrincipale, vSortieExtern, null, null);
-        vSortieExtern.setExits(vPorteScellee, null, null, null);
+        vEscalierCave.setExit("south", vCavePrincipale);
+        vCavePrincipale.setExit("north", vEscalierCave);
 
-        this.aCurrentRoom =vDortoirEst;
+        vCavePrincipale.setExit("south", vPorteScellee);
+        vPorteScellee.setExit("north", vCavePrincipale);
+
+        vPorteScellee.setExit("south", vSortieExtern);
+        vSortieExtern.setExit("north", vPorteScellee);
+
+        this.aCurrentRoom = vDortoirEst;
     }
+
+
 
     private void play()
     {
@@ -107,15 +155,6 @@ public class Game
         printLocationInfo();
     }
 
-    private void printExits()
-    {
-        if (this.aCurrentRoom.aNorthExit != null) System.out.print("north ");
-        if (this.aCurrentRoom.aEastExit  != null) System.out.print("east ");
-        if (this.aCurrentRoom.aSouthExit != null) System.out.print("south ");
-        if (this.aCurrentRoom.aWestExit  != null) System.out.print("west ");
-        System.out.println();
-    }
-
     private void printHelp()
     {
         System.out.println("You are lost. You are alone.");
@@ -124,9 +163,7 @@ public class Game
     }
 
     private void printLocationInfo(){
-        System.out.println(this.aCurrentRoom.getDescription());
-        System.out.print("Exits: ");
-        this.printExits();
+        System.out.println("Exits: " + this.aCurrentRoom.getExitString());
     }
 
     private void goRoom(Command pCommand)
@@ -140,7 +177,7 @@ public class Game
         Room vNextRoom = null;
 
         vNextRoom = this.aCurrentRoom.getExit(vDirection);
-        
+
         if (vNextRoom == null) {
             System.out.println("There is no door !");
             return;
