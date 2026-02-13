@@ -1,10 +1,19 @@
-import java.util.HashMap;
-
+/**
+ * La classe Game est le contrôleur principal du jeu Zuul.
+ * Elle gère la boucle de jeu, l'interprétation des commandes
+ * et les déplacements du joueur entre les pièces.
+ */
 public class Game
 {
+    /** Pièce dans laquelle se trouve actuellement le joueur */
     private Room aCurrentRoom;
+
+    /** Analyseur des commandes saisies par le joueur */
     private final Parser aParser;
 
+    /**
+     * Construit le jeu, initialise les pièces et démarre la partie.
+     */
     public Game()
     {
         this.createRooms();
@@ -12,6 +21,9 @@ public class Game
         this.play();
     }
 
+    /**
+     * Crée toutes les pièces du jeu et leurs connexions.
+     */
     private void createRooms()
     {
         Room vDortoirEst        = new Room("dans le dortoir est reserve aux soeurs");
@@ -131,8 +143,9 @@ public class Game
         this.aCurrentRoom = vDortoirEst;
     }
 
-
-
+    /**
+     * Lance la boucle principale du jeu.
+     */
     private void play()
     {
         this.printWelcome();
@@ -146,6 +159,9 @@ public class Game
         System.out.println("Thank you for playing.  Good bye.");
     }
 
+    /**
+     * Affiche le message de bienvenue et les informations initiales.
+     */
     private void printWelcome()
     {
         System.out.println();
@@ -155,6 +171,9 @@ public class Game
         printLocationInfo();
     }
 
+    /**
+     * Affiche l'aide du jeu et la liste des commandes disponibles.
+     */
     private void printHelp()
     {
         System.out.println("You are lost. You are alone.");
@@ -162,10 +181,19 @@ public class Game
         System.out.println("Your command words are: go help quit");
     }
 
-    private void printLocationInfo(){
-        System.out.println("Exits: " + this.aCurrentRoom.getExitString());
+    /**
+     * Affiche les informations de la pièce courante.
+     */
+    private void printLocationInfo()
+    {
+        System.out.println(this.aCurrentRoom.getDescription() + '\n' + "Exits: " + this.aCurrentRoom.getExitString());
     }
 
+    /**
+     * Déplace le joueur vers une autre pièce selon la commande donnée.
+     *
+     * @param pCommand la commande contenant la direction
+     */
     private void goRoom(Command pCommand)
     {
         if (!pCommand.hasSecondWord()) {
@@ -174,9 +202,7 @@ public class Game
         }
 
         String vDirection = pCommand.getSecondWord();
-        Room vNextRoom = null;
-
-        vNextRoom = this.aCurrentRoom.getExit(vDirection);
+        Room vNextRoom = this.aCurrentRoom.getExit(vDirection);
 
         if (vNextRoom == null) {
             System.out.println("There is no door !");
@@ -187,6 +213,12 @@ public class Game
         printLocationInfo();
     }
 
+    /**
+     * Traite une commande saisie par le joueur.
+     *
+     * @param pCommand la commande à traiter
+     * @return true si le jeu doit se terminer, false sinon
+     */
     private boolean processCommand(Command pCommand)
     {
         if (pCommand.isUnknown()) {
@@ -209,10 +241,15 @@ public class Game
                 return this.quit(pCommand);
             }
         }
-
         return false;
     }
 
+    /**
+     * Termine le jeu si la commande est valide.
+     *
+     * @param pCommand la commande quit
+     * @return true si le jeu doit s'arrêter
+     */
     private boolean quit(Command pCommand)
     {
         if (pCommand.hasSecondWord()) {
@@ -221,5 +258,4 @@ public class Game
         }
         return true;
     }
-
-}
+} // Game
