@@ -31,6 +31,7 @@ public class Game
         Room vRefectoire        = new Room("dans le refectoire commun");
         Room vCuisine           = new Room("dans la cuisine ou les repas sont prepares");
         Room vInfirmerie        = new Room("dans l infirmerie aux lumieres froides");
+        Room vHallCeremonies    = new Room("dans le hall des ceremonies");
         Room vCourIntern        = new Room("dans la cour interieure entouree de murs");
         Room vJardinCentral     = new Room("dans le jardin central sombre");
         Room vPuitsAncien       = new Room("pres du puits ancien en pierre");
@@ -43,7 +44,6 @@ public class Game
         Room vBiblioSacree      = new Room("dans la bibliotheque sacree");
         Room vArchiInterd       = new Room("dans les archives interdites");
         Room vCloitreIntern     = new Room("dans le cloitre interieur");
-        Room vHallCeremonies    = new Room("dans le hall des ceremonies");
         Room vSalleSerments     = new Room("dans la salle des serments");
         Room vBureauMatriarche  = new Room("dans le bureau de la matriarche");
         Room vAntichambreSacree = new Room("dans l antichambre sacree");
@@ -212,6 +212,19 @@ public class Game
         this.aCurrentRoom = vNextRoom;
         printLocationInfo();
     }
+    
+    /**
+     * Commande look (avec optionnel : second mot interdit).
+     */
+    private void look (final Command pCommand)
+    {
+        if (pCommand.hasSecondWord())
+        {
+            System.out.println("I don't know how to look at something in particular yet.");
+            return;
+        }
+        System.out.println(this.aCurrentRoom.getLongDescription());
+    }
 
     /**
      * Traite une commande saisie par le joueur.
@@ -237,6 +250,10 @@ public class Game
                 this.goRoom(pCommand);
                 return false;
             }
+            case "look" -> {
+                this.look(pCommand);
+                return false;
+            }
             case "quit" -> {
                 return this.quit(pCommand);
             }
@@ -258,4 +275,5 @@ public class Game
         }
         return true;
     }
+
 } // Game
