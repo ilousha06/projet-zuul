@@ -2,4 +2,7 @@
 comment0.target=CommandWords
 comment1.params=pString
 comment1.target=boolean\ isCommand(java.lang.String)
-numComments=2
+comment2.params=
+comment2.target=java.lang.String\ getCommandList()
+comment2.text=\r\n\ Construit\ et\ retourne\ la\ liste\ des\ commandes\ valides.\r\n\ Les\ commandes\ sont\ concat\u00E9n\u00E9es\ dans\ une\ cha\u00EEne\ de\ caract\u00E8res\r\n\ afin\ de\ pouvoir\ \u00EAtre\ affich\u00E9es\ dans\ l'aide\ du\ jeu.\r\n\r\n\ @return\ une\ cha\u00EEne\ contenant\ toutes\ les\ commandes\ valides\r\n
+numComments=3

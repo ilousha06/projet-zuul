@@ -35,4 +35,16 @@ public class Parser
             return new Command(null, null);
         }
     }
+
+    /**
+     * Retourne l'objet CommandWords utilisé par le Parser.
+     * Cette méthode permet à la classe Game d'avoir accer à la liste
+     * des commandes sans créer de dépendance.
+     *
+     */
+    public CommandWords getCommandWords()
+    {
+        return this.aCommandWords;
+    }
+
 }

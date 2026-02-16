@@ -172,14 +172,18 @@ public class Game
     }
 
     /**
-     * Affiche l'aide du jeu et la liste des commandes disponibles.
+     * Affiche l'aide du jeu.
+     * Cette méthode affiche un message d'aide ainsi que la liste
+     * des commandes disponibles, obtenue dynamiquement via le Parser.
      */
     private void printHelp()
     {
         System.out.println("You are lost. You are alone.");
         System.out.println("You wander around at the university.");
-        System.out.println("Your command words are: go help quit");
+        System.out.println("Your command words are:");
+        System.out.println(this.aParser.getCommandWords().getCommandList());
     }
+
 
     /**
      * Affiche les informations de la pièce courante.
