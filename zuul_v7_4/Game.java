@@ -212,7 +212,7 @@ public class Game
         this.aCurrentRoom = vNextRoom;
         printLocationInfo();
     }
-    
+
     /**
      * Commande look (avec optionnel : second mot interdit).
      */
@@ -224,6 +224,16 @@ public class Game
             return;
         }
         System.out.println(this.aCurrentRoom.getLongDescription());
+    }
+
+    /**
+     * Exécute la commande eat.
+     * Affiche un message indiquant que le joueur a mangé
+     * et n’a plus faim.
+     */
+    private void eat()
+    {
+        System.out.println("You have eaten now and you are not hungry any more.");
     }
 
     /**
@@ -252,6 +262,10 @@ public class Game
             }
             case "look" -> {
                 this.look(pCommand);
+                return false;
+            }
+            case "eat" -> {
+                this.eat();
                 return false;
             }
             case "quit" -> {

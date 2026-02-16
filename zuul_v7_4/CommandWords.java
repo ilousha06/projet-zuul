@@ -1,6 +1,6 @@
 public class CommandWords
 {
-    private final String[] aValidCommands = {"go", "help", "quit", "look"};
+    private final String[] aValidCommands = {"go", "help", "quit", "look", "eat"};
 
     public boolean isCommand(final String pString)
     {
