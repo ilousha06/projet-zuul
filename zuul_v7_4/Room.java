@@ -15,7 +15,6 @@ public class Room
 
     /**
      * Construire une nouvelle pièce avec une description donnée.
-     * 
      * @param pDescripion la description de la pièce
      */
     public Room(final String pDescripion)
@@ -25,10 +24,9 @@ public class Room
     }
 
     /**
-     * Ajoute une sortie à la pièce dans une direction donnée.
-     * 
-     * @param direction la direction de la sortie (north, south, up, down, etc.)
-     * @param neighbor la pièce voisine associée à cette direction
+     * Ajoute une sortie à la pièce dans une direction donnée :
+     *      @param direction la direction de la sortie (north, south, up, down, etc.)
+     *      @param neighbor la pièce voisine associée à cette direction
      */
     public void setExit(String direction, Room neighbor)
     {
@@ -36,10 +34,9 @@ public class Room
     }
 
     /**
-     * Retourne la pièce voisine dans la direction donnée.
-     * 
-     * @param direction la direction à emprunter
-     * @return la pièce correspondante ou null si aucune sortie n'existe
+     * Retourne la pièce voisine dans la direction donnée :
+     *      @param direction la direction à emprunter
+     *      @return la pièce correspondante ou null si aucune sortie n'existe
      */
     public Room getExit(final String direction)
     {
@@ -47,9 +44,8 @@ public class Room
     }
 
     /**
-     * Retourne la description de la pièce.
-     * 
-     * @return la description de la pièce
+     * Retourne la description de la pièce :
+     *      @return la description de la pièce
      */
     public String getDescription()
     {
@@ -59,17 +55,22 @@ public class Room
     /**
      * Construit et retourne une chaîne de caractères décrivant
      * toutes les sorties disponibles depuis cette pièce.
-     * 
      * @return une chaîne contenant les directions possibles
      */
     public String getExitString()
     {
-        StringBuilder vExits = new StringBuilder();
+        StringBuilder vExit = new StringBuilder("Exits:");
 
         for (String direction : this.aExits.keySet()) {
-            vExits.append(direction).append(" ");
+            vExit.append(" ").append(direction);
         }
 
-        return vExits.toString();
+        return vExit.toString();
+    }
+
+
+    public String getLongDescription()
+    {
+        return "Vous êtes " +  this.aDescription + ".\n" + getExitString();
     }
 } // Room

@@ -186,7 +186,7 @@ public class Game
      */
     private void printLocationInfo()
     {
-        System.out.println(this.aCurrentRoom.getDescription() + '\n' + "Exits: " + this.aCurrentRoom.getExitString());
+        System.out.println(aCurrentRoom.getLongDescription());
     }
 
     /**
