@@ -47,4 +47,17 @@ public class Parser
         return this.aCommandWords;
     }
 
+    /**
+     * Retourne la liste des commandes valides.
+     * Cette méthode sert de relais entre Game et CommandWords,
+     * afin d'éviter un couplage direct entre ces deux classes.
+     *
+     * @return la liste des commandes valides
+     */
+    public String getCommandList()
+    {
+        return this.aCommandWords.getCommandList();
+    }
+
+
 }

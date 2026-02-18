@@ -127,12 +127,12 @@ public class Game
 
         vChambreReliques.setExit("west", vCrypteAncienne);
 
-        // ZONE CAVE
-        vCrypteAncienne.setExit("down", vEscalierCave);
-        vEscalierCave.setExit("up", vCrypteAncienne);
+        vCrypteAncienne.setExit("east", vEscalierCave);
+        vEscalierCave.setExit("north", vCrypteAncienne);
 
-        vEscalierCave.setExit("south", vCavePrincipale);
-        vCavePrincipale.setExit("north", vEscalierCave);
+        // ZONE CAVE
+        vEscalierCave.setExit("down", vCavePrincipale);
+        vCavePrincipale.setExit("up", vEscalierCave);
 
         vCavePrincipale.setExit("south", vPorteScellee);
         vPorteScellee.setExit("north", vCavePrincipale);
@@ -174,14 +174,14 @@ public class Game
     /**
      * Affiche l'aide du jeu.
      * Cette méthode affiche un message d'aide ainsi que la liste
-     * des commandes disponibles, obtenue dynamiquement via le Parser.
+     * des commandes disponibles, récupérée via le Parser.
      */
     private void printHelp()
     {
         System.out.println("You are lost. You are alone.");
         System.out.println("You wander around at the university.");
         System.out.println("Your command words are:");
-        System.out.println(this.aParser.getCommandWords().getCommandList());
+        System.out.println(this.aParser.getCommandList());
     }
 
 

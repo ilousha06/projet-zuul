@@ -1,8 +1,10 @@
 #BlueJ class context
 comment0.target=CommandWords
+comment0.text=\r\n\ La\ classe\ CommandWords\ contient\ l'ensemble\ des\ commandes\ valides\r\n\ reconnues\ par\ le\ jeu\ Zuul.\r\n\ Elle\ est\ responsable\ de\ la\ validation\ des\ commandes\ et\ de\ la\r\n\ production\ de\ la\ liste\ des\ commandes\ disponibles.\r\n
 comment1.params=pString
 comment1.target=boolean\ isCommand(java.lang.String)
+comment1.text=\r\n\ V\u00E9rifie\ si\ une\ cha\u00EEne\ correspond\ \u00E0\ une\ commande\ valide.\r\n\r\n\ @param\ pString\ la\ cha\u00EEne\ \u00E0\ tester\r\n\ @return\ true\ si\ la\ commande\ est\ valide,\ false\ sinon\r\n
 comment2.params=
 comment2.target=java.lang.String\ getCommandList()
-comment2.text=\r\n\ Construit\ et\ retourne\ la\ liste\ des\ commandes\ valides.\r\n\ Les\ commandes\ sont\ concat\u00E9n\u00E9es\ dans\ une\ cha\u00EEne\ de\ caract\u00E8res\r\n\ afin\ de\ pouvoir\ \u00EAtre\ affich\u00E9es\ dans\ l'aide\ du\ jeu.\r\n\r\n\ @return\ une\ cha\u00EEne\ contenant\ toutes\ les\ commandes\ valides\r\n
+comment2.text=\r\n\ Construit\ et\ retourne\ la\ liste\ des\ commandes\ valides.\r\n\ Cette\ m\u00E9thode\ ne\ fait\ qu'assembler\ l'information\ et\r\n\ ne\ r\u00E9alise\ aucun\ affichage.\r\n\r\n\ @return\ une\ cha\u00EEne\ contenant\ toutes\ les\ commandes\ valides\r\n
 numComments=3
