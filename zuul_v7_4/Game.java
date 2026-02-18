@@ -165,7 +165,11 @@ public class Game
     private void printWelcome()
     {
         System.out.println();
-        System.out.println("Welcome to the world of Zuul!");
+        System.out.println("=================================");
+        System.out.println("        LA COMMUNAUTÉ             ");
+        System.out.println("=================================");
+        System.out.println("Une communauté religieuse fermée.");
+        System.out.println("Des secrets. Des rituels. Une seule issue.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
         printLocationInfo();
