@@ -1,25 +1,33 @@
 import java.util.Scanner;
 
+/**
+ * Analyse les commandes saisies par l'utilisateur.
+ */
 public class Parser
 {
+    /** Liste des commandes valides */
     private final CommandWords aCommandWords;
-    private final Scanner aScanner;
 
+    /**
+     * Constructeur du parser
+     */
     public Parser()
     {
         this.aCommandWords = new CommandWords();
-        this.aScanner = new Scanner(System.in);
     }
 
-    public Command getCommand()
+    /**
+     * Analyse une ligne de commande saisie par l'utilisateur
+     *
+     * @param pCommandLine la commande entrée sous forme de texte
+     * @return un objet Command correspondant
+     */
+    public Command getCommand(String pCommandLine)
     {
-        String vInputLine;
         String vWord1 = null;
         String vWord2 = null;
 
-        vInputLine = this.aScanner.nextLine();
-
-        Scanner vTokenizer = new Scanner(vInputLine);
+        Scanner vTokenizer = new Scanner(pCommandLine);
 
         if (vTokenizer.hasNext()) {
             vWord1 = vTokenizer.next();
@@ -37,27 +45,10 @@ public class Parser
     }
 
     /**
-     * Retourne l'objet CommandWords utilisé par le Parser.
-     * Cette méthode permet à la classe Game d'avoir accer à la liste
-     * des commandes sans créer de dépendance.
-     *
-     */
-    public CommandWords getCommandWords()
-    {
-        return this.aCommandWords;
-    }
-
-    /**
-     * Retourne la liste des commandes valides.
-     * Cette méthode sert de relais entre Game et CommandWords,
-     * afin d'éviter un couplage direct entre ces deux classes.
-     *
-     * @return la liste des commandes valides
+     * Retourne la liste des commandes valides
      */
     public String getCommandList()
     {
         return this.aCommandWords.getCommandList();
     }
-
-
 }

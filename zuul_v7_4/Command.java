@@ -6,32 +6,32 @@
  */
 public class Command
 {
-    private final String aCommandWord;
-    private final String aSecondWord;
+    private final String commandWord;
+    private final String secondWord;
 
-    public Command(final String pCommandWord, final String pSecondWord)
+    public Command(String firstWord, String secondWord)
     {
-        this.aCommandWord = pCommandWord;
-        this.aSecondWord  = pSecondWord;
+        commandWord = firstWord;
+        this.secondWord = secondWord;
     }
 
     public String getCommandWord()
     {
-        return this.aCommandWord;
+        return commandWord;
     }
 
     public String getSecondWord()
     {
-        return this.aSecondWord;
+        return secondWord;
     }
 
     public boolean hasSecondWord()
     {
-        return this.aSecondWord != null;
+        return secondWord != null;
     }
 
     public boolean isUnknown()
     {
-        return this.aCommandWord == null;
+        return (commandWord == null);
     }
 } // Command
