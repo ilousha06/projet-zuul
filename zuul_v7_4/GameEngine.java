@@ -26,6 +26,7 @@ public class GameEngine
     {
         this.createRooms();
         this.aParser = new Parser();
+        this.gui = new UserInterface(this);
     }
 
     /**
@@ -97,6 +98,7 @@ public class GameEngine
         vJardinCentral.setExit("east", vAutelExtern);
         vJardinCentral.setExit("west", vLabyrintheVeg);
 
+    
         vPuitsAncien.setExit("north", vJardinCentral);
         vPuitsAncien.setExit("down", vSalleCachee);
         vSalleCachee.setExit("up", vPuitsAncien);

@@ -1,7 +1,7 @@
 #BlueJ class context
 comment0.target=Command
 comment0.text=\r\n\ Classe\ Command\ -\ une\ commande\ du\ jeu\ d'aventure\ Zuul.\r\n\r\n\ @author\ Vous\ \!\r\n
-comment1.params=pCommandWord\ pSecondWord
+comment1.params=firstWord\ secondWord
 comment1.target=Command(java.lang.String,\ java.lang.String)
 comment2.params=
 comment2.target=java.lang.String\ getCommandWord()
