@@ -1,12 +1,12 @@
 /**
- * Représente un objet dans le jeu
+ * Représente un objet du jeu
  */
 public class Item
 {
-    private final String description;
-    private final int weight;
+    private String description;
+    private int weight;
 
-    public Item(final String description, final int weight)
+    public Item(String description, int weight)
     {
         this.description = description;
         this.weight = weight;
@@ -20,5 +20,13 @@ public class Item
     public int getWeight()
     {
         return weight;
+    }
+
+    /**
+     * description complète de l’item
+     */
+    public String getLongDescription()
+    {
+        return description + " (" + weight + " kg)";
     }
 }

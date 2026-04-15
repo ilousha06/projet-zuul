@@ -109,6 +109,6 @@ public class Room
         if(aItem == null) {
             return "No item here.";
         }
-        return "Item: " + aItem.getDescription() + " (" + aItem.getWeight() + " kg)";
+        return "Item: " + aItem.getLongDescription(); // MVC
     }
 }
