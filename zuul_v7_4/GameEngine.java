@@ -25,7 +25,6 @@ public class GameEngine
     {
         this.model = new GameModel();
         this.aParser = new Parser();
-        this.gui = new UserInterface(this);
     }
 
     /**
@@ -115,13 +114,33 @@ public class GameEngine
     }
 
     /**
-     * Commande look : affiche la description de la pièce actuelle.
-     *
-     * @param pCommand la commande look
+     * Commande look :
+     * - sans argument → affiche la salle
+     * - avec argument → affiche un item
      */
     private void look(Command pCommand)
     {
-        gui.println(model.getCurrentRoom().getLongDescription());
+        // look seul
+        if (!pCommand.hasSecondWord()) {
+            // on affiche la description complète de la salle
+            gui.println(model.getCurrentRoom().getLongDescription());
+            return;
+        }
+
+        // look objet
+        String itemName = pCommand.getSecondWord();
+
+        // on cherche l'objet dans la salle actuelle
+        Item item = model.getCurrentRoom().getItem(itemName);
+
+        // si l'objet n'exi pas
+        if(item == null) {
+            gui.println("There is no such item here.");
+        }
+        else {
+            // on affiche les détails de l'objet
+            gui.println(item.getLongDescription());
+        }
     }
 
     /**

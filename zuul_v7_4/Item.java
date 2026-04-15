@@ -3,23 +3,30 @@
  */
 public class Item
 {
-    private String description;
-    private int weight;
+    private final String aDescription;
+    private final int aWeight;
+    private final String aName;
 
-    public Item(String description, int weight)
+    public Item(final String name, final String description, final int weight)
     {
-        this.description = description;
-        this.weight = weight;
+        this.aName = name;
+        this.aDescription = description;
+        this.aWeight = weight;
     }
 
     public String getDescription()
     {
-        return description;
+        return aDescription;
     }
 
     public int getWeight()
     {
-        return weight;
+        return aWeight;
+    }
+
+    public String getName()
+    {
+        return aName;
     }
 
     /**
@@ -27,6 +34,6 @@ public class Item
      */
     public String getLongDescription()
     {
-        return description + " (" + weight + " kg)";
+        return "Item: " + aName + " - " + aDescription + " (" + aWeight + " kg)";
     }
 }

@@ -111,4 +111,23 @@ public class Room
         }
         return "Item: " + aItem.getLongDescription(); // MVC
     }
+
+    /**
+     * Retourne l'item présent dans la pièce correspondant au nom donné.
+     *
+     * @param name le nom de l'objet recherché
+     * @return l'item s'il existe dans la pièce, sinon null
+     */
+    public Item getItem(String name)
+    {
+        // on vérifie d'abord qu'il y a bien un item dans la salle
+        // sinon ça évite une erreur
+        if(aItem != null && aItem.getName().equalsIgnoreCase(name)) {
+            // equalsIgnoreCase = ignore majuscule/minuscule
+            return aItem; // on retourne l'objet trouvé
+        }
+
+        //si aucun item ou mauvais nom → on retourne null
+        return null;
+    }
 }
