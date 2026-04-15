@@ -1,3 +1,4 @@
+import java.util.Stack;
 /**
  * La classe GameModel représente le modèle du jeu (architecture MVC).
  * Elle contient toute la logique du jeu :
@@ -11,12 +12,16 @@ public class GameModel
     /** Pièce actuelle du joueur */
     private Room aCurrentRoom;
 
+    /** Historique des salles visitées (pour la commande back) */
+    private final Stack<Room> aHistory; // stocke les anciennes salles
+
     /**
      * Constructeur du modèle.
      * Initialise les salles et la position de départ.
      */
     public GameModel()
     {
+        this.aHistory = new Stack<>(); // initialisation de l'historique
         createRooms();
     }
 
@@ -33,9 +38,9 @@ public class GameModel
         Room vInfirmerie         = new Room("dans l infirmerie aux lumieres froides", "Infirmerie.png");
         Room vHallCeremonies     = new Room("dans le hall des ceremonies", "Hall.png");
         Room vCourIntern         = new Room("dans la cour interieure entouree de murs", "Cour.png");
-        Room vJardinCentral      = new Room("dans le jardin central sombre", "Jardin centrale.png");
+        Room vJardinCentral      = new Room("dans le jardin central sombre", "Jardin.png");
         Room vPuitsAncien        = new Room("pres du puits ancien en pierre", "Puits.png");
-        Room vSalleCachee        = new Room("dans une salle cachee sous le puits", "cachee.png");
+        Room vSalleCachee        = new Room("dans une salle cachee sous le puits", "font_puit.png");
         Room vSerreCultivee      = new Room("dans la serre cultivee abandonnee", "serre.png");
         Room vLabyrintheVeg      = new Room("dans le labyrinthe vegetal inquietant", "Labyrinthe.png");
         Room vAutelExtern        = new Room("pres de l'autel exterieur en pierre", "autel.png");
@@ -77,7 +82,6 @@ public class GameModel
         vJardinCentral.setExit("south", vPuitsAncien);
         vJardinCentral.setExit("east", vAutelExtern);
         vJardinCentral.setExit("west", vLabyrintheVeg);
-
 
         vPuitsAncien.setExit("north", vJardinCentral);
         vPuitsAncien.setExit("down", vSalleCachee);
@@ -212,7 +216,20 @@ public class GameModel
         Room next = aCurrentRoom.getExit(direction);
 
         if(next != null) {
+            aHistory.push(aCurrentRoom); // sauvegarde de la salle actuelle
             aCurrentRoom = next;
         }
+    }
+
+    /**
+     * Permet de revenir à la salle précédente
+     */
+    public boolean goBack()
+    {
+        if(!aHistory.isEmpty()) {
+            aCurrentRoom = aHistory.pop();
+            return true; // succès
+        }
+        return false; // rien à faire
     }
 }

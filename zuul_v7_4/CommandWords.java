@@ -8,7 +8,7 @@ public class CommandWords
 {
     /** Tableau contenant les commandes valides du jeu */
     private final String[] aValidCommands = {
-            "go", "help", "quit", "look", "eat"
+            "go", "help", "quit", "look", "eat", "back"
     };
 
     /**

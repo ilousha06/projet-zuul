@@ -62,6 +62,8 @@ public class GameEngine
             case "look" -> this.look(pCommand);
             case "eat" -> this.eat();
             case "quit" -> this.endGame();
+            // ajout de la commande back
+            case "back" -> this.back();
             default -> gui.println("Command not implemented.");
         }
     }
@@ -160,4 +162,19 @@ public class GameEngine
         gui.println("Thank you for playing. Good bye.");
         gui.enable(false);
     }
+
+    /**
+     * Commande back :
+     * permet de revenir à la salle précédente
+     */
+    private void back()
+    {
+        if(!model.goBack()) {
+            gui.println("No previous room.");
+            return;
+        }
+
+        printLocationInfo();
+    }
+
 }
