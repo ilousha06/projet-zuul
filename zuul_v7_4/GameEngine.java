@@ -63,7 +63,7 @@ public class GameEngine
             case "eat" -> this.eat();
             case "quit" -> this.endGame();
             // ajout de la commande back
-            case "back" -> this.back();
+            case "back" -> this.back(pCommand);
             default -> gui.println("Command not implemented.");
         }
     }
@@ -167,13 +167,26 @@ public class GameEngine
      * Commande back :
      * permet de revenir à la salle précédente
      */
-    private void back()
+    /**
+     * Commande back :
+     * permet de revenir à la salle précédente
+     * et gère les erreurs (second mot)
+     */
+    private void back(Command pCommand)
     {
+        // refuse un second mot
+        if(pCommand.hasSecondWord()) {
+            gui.println("The back command doesn't accept a second word.");
+            return;
+        }
+
+        // pas d'historique
         if(!model.goBack()) {
             gui.println("No previous room.");
             return;
         }
 
+        // retour normal
         printLocationInfo();
     }
 
