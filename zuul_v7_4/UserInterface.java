@@ -76,8 +76,8 @@ public class UserInterface implements ActionListener
         downButton = new JButton("down");
 
         // ajout dans la grille (ordre important)
-        buttonPanel.add(northButton);
         buttonPanel.add(helpButton);
+        buttonPanel.add(northButton);
         buttonPanel.add(lookButton);
 
         buttonPanel.add(westButton);

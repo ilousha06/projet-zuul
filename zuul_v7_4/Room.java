@@ -12,12 +12,14 @@ public class Room
     /** Description de la pièce */
     private final String aDescription;
 
-    /** Collection des sorties de la pièce (direction → Room) */
+    /** Collection des sorties de la pièce (direction = Room) */
     private final HashMap<String, Room> aExits;
 
     /** Nom du fichier image associé à la pièce */
-    private final String imageName;
+    private final String aImageName;
 
+    /** Item présent dans la pièce (peut être null si aucun objet) */
+    private Item aItem; // contient l’objet de la salle
     /**
      * Construit une nouvelle pièce avec une description et une image.
      *
@@ -27,15 +29,15 @@ public class Room
     public Room(final String pDescription, final String pImage)
     {
         this.aDescription = pDescription;
-        this.imageName = pImage;
+        this.aImageName = pImage;
         this.aExits = new HashMap<>();
     }
 
     /**
      * Ajoute une sortie à la pièce dans une direction donnée.
      *
-     * @param pDirection la direction de la sortie (north, south, up, down, etc.)
-     * @param pNeighbor la pièce voisine associée à cette direction
+     * @param pDirection la direction de la sortie (north, south, etc.)
+     * @param pNeighbor la pièce voisine
      */
     public void setExit(final String pDirection, final Room pNeighbor)
     {
@@ -43,10 +45,7 @@ public class Room
     }
 
     /**
-     * Retourne la pièce voisine dans la direction donnée.
-     *
-     * @param pDirection la direction à emprunter
-     * @return la pièce correspondante ou null si aucune sortie n'existe
+     * Retourne la pièce voisine dans une direction donnée.
      */
     public Room getExit(final String pDirection)
     {
@@ -55,8 +54,6 @@ public class Room
 
     /**
      * Retourne la description de la pièce.
-     *
-     * @return la description de la pièce
      */
     public String getDescription()
     {
@@ -64,9 +61,7 @@ public class Room
     }
 
     /**
-     * Construit une chaîne contenant toutes les sorties disponibles.
-     *
-     * @return une chaîne contenant les directions possibles
+     * Retourne les sorties disponibles.
      */
     public String getExitString()
     {
@@ -80,23 +75,40 @@ public class Room
     }
 
     /**
-     * Retourne une description complète de la pièce,
-     * incluant la description et les sorties.
-     *
-     * @return la description complète de la pièce
+     * Retourne une description complète :
+     * description + sorties + item
      */
     public String getLongDescription()
     {
-        return "Vous êtes " + this.aDescription + ".\n" + this.getExitString();
+        return "Vous êtes " + this.aDescription + ".\n"
+                + this.getExitString() + "\n"
+                + this.getItemString(); //affichage item
     }
 
     /**
-     * Retourne le nom du fichier image associé à la pièce.
-     *
-     * @return le nom de l'image
+     * Retourne le nom de l’image.
      */
     public String getImageName()
     {
-        return this.imageName;
+        return this.aImageName;
+    }
+
+    /**
+     * Associe un item à la pièce.
+     */
+    public void setItem(Item item)
+    {
+        this.aItem = item; //on place un objet dans la salle
+    }
+
+    /**
+     * Retourne une description de l’item présent.
+     */
+    public String getItemString()
+    {
+        if(aItem == null) {
+            return "No item here.";
+        }
+        return "Item: " + aItem.getDescription() + " (" + aItem.getWeight() + " kg)";
     }
 }

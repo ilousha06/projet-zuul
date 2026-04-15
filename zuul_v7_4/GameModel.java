@@ -33,9 +33,9 @@ public class GameModel
         Room vInfirmerie         = new Room("dans l infirmerie aux lumieres froides", "Infirmerie.png");
         Room vHallCeremonies     = new Room("dans le hall des ceremonies", "Hall.png");
         Room vCourIntern         = new Room("dans la cour interieure entouree de murs", "Cour.png");
-        Room vJardinCentral      = new Room("dans le jardin central sombre", "Jardin.png");
+        Room vJardinCentral      = new Room("dans le jardin central sombre", "Jardin centrale.png");
         Room vPuitsAncien        = new Room("pres du puits ancien en pierre", "Puits.png");
-        Room vSalleCachee        = new Room("dans une salle cachee sous le puits", "font_puit.png");
+        Room vSalleCachee        = new Room("dans une salle cachee sous le puits", "cachee.png");
         Room vSerreCultivee      = new Room("dans la serre cultivee abandonnee", "serre.png");
         Room vLabyrintheVeg      = new Room("dans le labyrinthe vegetal inquietant", "Labyrinthe.png");
         Room vAutelExtern        = new Room("pres de l'autel exterieur en pierre", "autel.png");
@@ -71,14 +71,14 @@ public class GameModel
 
         vRefectoire.setExit("east", vCourIntern);
         vRefectoire.setExit("north", vCuisine);
-        vCuisine.setExit("south", vRefectoire);
+        vCuisine.setExit("west", vRefectoire);
 
         vJardinCentral.setExit("north", vCourIntern);
         vJardinCentral.setExit("south", vPuitsAncien);
         vJardinCentral.setExit("east", vAutelExtern);
         vJardinCentral.setExit("west", vLabyrintheVeg);
 
-    
+
         vPuitsAncien.setExit("north", vJardinCentral);
         vPuitsAncien.setExit("down", vSalleCachee);
         vSalleCachee.setExit("up", vPuitsAncien);
@@ -98,17 +98,17 @@ public class GameModel
         vSalleSerments.setExit("south", vHallCeremonies);
         vSalleSerments.setExit("east", vAntichambreSacree);
 
-        vAntichambreSacree.setExit("west", vSalleSerments);
+        vAntichambreSacree.setExit("south", vSalleSerments);
         vAntichambreSacree.setExit("north", vBureauMatriarche);
 
         vBureauMatriarche.setExit("south", vAntichambreSacree);
 
-        vCloitreIntern.setExit("north", vHallCeremonies);
-        vCloitreIntern.setExit("south", vSanctuaireIntern);
-        vCloitreIntern.setExit("east", vBiblioSacree);
-        vChapPrinci.setExit("west", vChapPrinci);
+        vChapPrinci.setExit("north", vHallCeremonies);
+        vChapPrinci.setExit("south", vSanctuaireIntern);
+        vChapPrinci.setExit("east", vBiblioSacree);
+        vChapPrinci.setExit("west", vCloitreIntern);
 
-        vChapPrinci.setExit("east", vCloitreIntern);
+        vCloitreIntern.setExit("east", vChapPrinci);
         vBiblioSacree.setExit("west", vChapPrinci);
         vBiblioSacree.setExit("north", vArchiInterd);
         vArchiInterd.setExit("south", vBiblioSacree);
@@ -137,6 +137,58 @@ public class GameModel
         vSortieExtern.setExit("north", vPorteScellee);
 
         this.aCurrentRoom = vDortoirEast;
+
+        // ITEMS
+        Item journal = new Item("un journal intime d'une ancienne novice", 1);
+        Item pain = new Item("un pain au goût étrange", 1);
+
+        Item livre = new Item("un livre interdit sur les rituels", 2);
+        Item cleRouille = new Item("une clé rouillée", 1);
+        Item document = new Item("un document secret sur la communauté", 1);
+
+        Item bougie = new Item("une bougie noire", 1);
+        Item symbole = new Item("un symbole gravé étrange", 1);
+        Item relique = new Item("une relique ancienne", 2);
+
+        Item cleFinale = new Item("une clé ancienne massive", 2);
+        Item outil = new Item("un outil cassé", 2);
+
+        Item cleRouge = new Item("une clé rouge étrange", 1);
+
+        Item papier1 = new Item("un morceau de papier avec le chiffre 3", 1);
+        Item papier2 = new Item("un morceau de papier avec le chiffre 7", 1);
+        Item papier3 = new Item("un morceau de papier avec le chiffre 1", 1);
+        Item papier4 = new Item("un morceau de papier avec le chiffre 9", 1);
+
+        Item seringue = new Item("une seringue contenant un liquide inconnu", 1);
+        Item bible = new Item("une vieille bible usée", 2);
+        Item croix = new Item("une croix en bois sombre", 1);
+
+        // PLACEMENT
+        vDortoirEast.setItem(journal);
+        vRefectoire.setItem(pain);
+
+        vBiblioSacree.setItem(livre);
+        vArchiInterd.setItem(cleRouille);
+        vBureauMatriarche.setItem(document);
+
+        vSalleSerments.setItem(bougie);
+        vSanctuaireIntern.setItem(symbole);
+        vCrypteAncienne.setItem(relique);
+
+        vCavePrincipale.setItem(cleFinale);
+        vCabaneJardin.setItem(outil);
+
+        vSalleRituels.setItem(cleRouge);
+
+        vDortoirOuest.setItem(papier1);
+        vCuisine.setItem(papier2);
+        vJardinCentral.setItem(papier3);
+        vChambreReliques.setItem(papier4);
+
+        vInfirmerie.setItem(seringue);
+        vChapPrinci.setItem(bible);
+        vCloitreIntern.setItem(croix);
     }
 
     /**
