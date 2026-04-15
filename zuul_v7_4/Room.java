@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * La classe Room représente une pièce du jeu Zuul.
@@ -6,38 +7,35 @@ import java.util.HashMap;
  * - une description
  * - une image associée
  * - un ensemble de sorties vers d'autres pièces
+ * - une liste d'items (plusieurs objets possibles)
  */
 public class Room
 {
     /** Description de la pièce */
     private final String aDescription;
 
-    /** Collection des sorties de la pièce (direction = Room) */
+    /** Collection des sorties */
     private final HashMap<String, Room> aExits;
 
-    /** Nom du fichier image associé à la pièce */
+    /** Nom du fichier image */
     private final String aImageName;
 
-    /** Item présent dans la pièce (peut être null si aucun objet) */
-    private Item aItem; // contient l’objet de la salle
+    /** Liste des items présents dans la pièce */
+    private final ArrayList<Item> aItems;
+
     /**
-     * Construit une nouvelle pièce avec une description et une image.
-     *
-     * @param pDescription la description de la pièce
-     * @param pImage le nom du fichier image associé à la pièce
+     * Constructeur de la classe Room
      */
     public Room(final String pDescription, final String pImage)
     {
         this.aDescription = pDescription;
         this.aImageName = pImage;
         this.aExits = new HashMap<>();
+        this.aItems = new ArrayList<>(); // initialisation de la liste des items
     }
 
     /**
-     * Ajoute une sortie à la pièce dans une direction donnée.
-     *
-     * @param pDirection la direction de la sortie (north, south, etc.)
-     * @param pNeighbor la pièce voisine
+     * Ajoute une sortie à la pièce
      */
     public void setExit(final String pDirection, final Room pNeighbor)
     {
@@ -45,7 +43,7 @@ public class Room
     }
 
     /**
-     * Retourne la pièce voisine dans une direction donnée.
+     * Retourne la pièce voisine dans une direction donnée
      */
     public Room getExit(final String pDirection)
     {
@@ -53,7 +51,7 @@ public class Room
     }
 
     /**
-     * Retourne la description de la pièce.
+     * Retourne la description de la pièce
      */
     public String getDescription()
     {
@@ -61,7 +59,7 @@ public class Room
     }
 
     /**
-     * Retourne les sorties disponibles.
+     * Retourne les sorties disponibles
      */
     public String getExitString()
     {
@@ -76,58 +74,58 @@ public class Room
 
     /**
      * Retourne une description complète :
-     * description + sorties + item
+     * description + sorties + items
      */
     public String getLongDescription()
     {
         return "Vous êtes " + this.aDescription + ".\n"
                 + this.getExitString() + "\n"
-                + this.getItemString(); //affichage item
+                + this.getItemString();
     }
 
     /**
-     * Retourne le nom de l’image.
+     * Retourne le nom de l’image associée
      */
     public String getImageName()
     {
         return this.aImageName;
     }
 
+
     /**
-     * Associe un item à la pièce.
+     * Ajoute un item dans la pièce
      */
-    public void setItem(Item item)
+    public void addItem(Item item)
     {
-        this.aItem = item; //on place un objet dans la salle
+        this.aItems.add(item); // ajoute un objet dans la salle
     }
 
     /**
-     * Retourne une description de l’item présent.
+     * Retourne la liste des items présents dans la pièce
      */
     public String getItemString()
     {
-        if(aItem == null) {
+        if(aItems.isEmpty()) {
             return "No item here.";
         }
-        return "Item: " + aItem.getLongDescription(); // MVC
+
+        StringBuilder result = new StringBuilder("Items:");
+
+        for(Item item : aItems) {
+            result.append(" ").append(item.getName());
+        }
+
+        return result.toString();
     }
 
     /**
-     * Retourne l'item présent dans la pièce correspondant au nom donné.
-     *
-     * @param name le nom de l'objet recherché
-     * @return l'item s'il existe dans la pièce, sinon null
+     * Recherche un item par son nom dans la pièce
      */
     public Item getItem(String name)
     {
-        // on vérifie d'abord qu'il y a bien un item dans la salle
-        // sinon ça évite une erreur
-        if(aItem != null && aItem.getName().equalsIgnoreCase(name)) {
-            // equalsIgnoreCase = ignore majuscule/minuscule
-            return aItem; // on retourne l'objet trouvé
+        for(Item item : aItems) {
+            if(item.getName().equalsIgnoreCase(name)) return item;
         }
-
-        //si aucun item ou mauvais nom → on retourne null
         return null;
     }
 }

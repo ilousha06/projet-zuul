@@ -25,6 +25,7 @@ public class GameEngine
     {
         this.model = new GameModel();
         this.aParser = new Parser();
+        this.gui = new UserInterface(this);
     }
 
     /**

@@ -139,56 +139,56 @@ public class GameModel
         this.aCurrentRoom = vDortoirEast;
 
         // ITEMS
-        Item journal = new Item("un journal intime d'une ancienne novice", 1);
-        Item pain = new Item("un pain au goût étrange", 1);
+        Item journal = new Item("journal","un journal intime d'une ancienne novice", 1);
+        Item pain = new Item("pain", "un pain au goût étrange", 1);
 
-        Item livre = new Item("un livre interdit sur les rituels", 2);
-        Item cleRouille = new Item("une clé rouillée", 1);
-        Item document = new Item("un document secret sur la communauté", 1);
+        Item livre = new Item("livre interdit","un livre interdit sur les rituels", 2);
+        Item cleRouille = new Item("clé rouillée", "une clé rouillée sans doute pour un coffre?" ,1);
+        Item document = new Item("document","un document secret sur la communauté", 1);
 
-        Item bougie = new Item("une bougie noire", 1);
-        Item symbole = new Item("un symbole gravé étrange", 1);
-        Item relique = new Item("une relique ancienne", 2);
+        Item bougie = new Item("bougie noire","une bougie noire à mettre dans la lanterne", 1);
+        Item symbole = new Item("symbole","un symbole gravé étrange dans une feuille", 1);
+        Item relique = new Item("relique","une relique ancienne", 2);
 
-        Item cleFinale = new Item("une clé ancienne massive", 2);
-        Item outil = new Item("un outil cassé", 2);
+        Item cleFinale = new Item("clé ancienne","une clé ancienne massive", 2);
+        Item outil = new Item("outil","un outil cassé", 2);
 
-        Item cleRouge = new Item("une clé rouge étrange", 1);
+        Item cleRouge = new Item("clé rouge","une clé rouge étrange", 1);
 
-        Item papier1 = new Item("un morceau de papier avec le chiffre 3", 1);
-        Item papier2 = new Item("un morceau de papier avec le chiffre 7", 1);
-        Item papier3 = new Item("un morceau de papier avec le chiffre 1", 1);
-        Item papier4 = new Item("un morceau de papier avec le chiffre 9", 1);
+        Item papier1 = new Item("morceau 1","un morceau de papier avec le chiffre 3", 1);
+        Item papier2 = new Item("morceau 2","un morceau de papier avec le chiffre 7", 1);
+        Item papier3 = new Item("morceau 3","un morceau de papier avec le chiffre 1", 1);
+        Item papier4 = new Item("morceau 4","un morceau de papier avec le chiffre 9", 1);
 
-        Item seringue = new Item("une seringue contenant un liquide inconnu", 1);
-        Item bible = new Item("une vieille bible usée", 2);
-        Item croix = new Item("une croix en bois sombre", 1);
+        Item seringue = new Item("seringue","une seringue contenant un liquide inconnu", 1);
+        Item bible = new Item("bible","une vieille bible usée", 2);
+        Item croix = new Item("croix","une croix en bois sombre", 1);
 
         // PLACEMENT
-        vDortoirEast.setItem(journal);
-        vRefectoire.setItem(pain);
+        vDortoirEast.addItem(journal);
+        vRefectoire.addItem(pain);
 
-        vBiblioSacree.setItem(livre);
-        vArchiInterd.setItem(cleRouille);
-        vBureauMatriarche.setItem(document);
+        vBiblioSacree.addItem(livre);
+        vSalleCachee.addItem(cleRouille);
+        vBureauMatriarche.addItem(document);
 
-        vSalleSerments.setItem(bougie);
-        vSanctuaireIntern.setItem(symbole);
-        vCrypteAncienne.setItem(relique);
+        vSalleSerments.addItem(bougie);
+        vSanctuaireIntern.addItem(symbole);
+        vCrypteAncienne.addItem(relique);
 
-        vCavePrincipale.setItem(cleFinale);
-        vCabaneJardin.setItem(outil);
+        vCavePrincipale.addItem(cleFinale);
+        vCabaneJardin.addItem(outil);
 
-        vSalleRituels.setItem(cleRouge);
+        vSalleRituels.addItem(cleRouge);
 
-        vDortoirOuest.setItem(papier1);
-        vCuisine.setItem(papier2);
-        vJardinCentral.setItem(papier3);
-        vChambreReliques.setItem(papier4);
+        vDortoirOuest.addItem(papier1);
+        vCuisine.addItem(papier2);
+        vJardinCentral.addItem(papier3);
+        vChambreReliques.addItem(papier4);
 
-        vInfirmerie.setItem(seringue);
-        vChapPrinci.setItem(bible);
-        vCloitreIntern.setItem(croix);
+        vInfirmerie.addItem(seringue);
+        vChapPrinci.addItem(bible);
+        vCloitreIntern.addItem(croix);
     }
 
     /**
