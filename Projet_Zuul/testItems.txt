@@ -1,0 +1,49 @@
+look
+
+# TAKE
+take journal
+inventory
+
+drop journal
+inventory
+
+# reprendre
+take journal
+
+go west
+go west
+look
+take herbes
+inventory
+eat herbes
+inventory
+
+# EAT PAIN
+go east
+go south
+go east
+look
+take painbeni
+eat painbeni
+
+# EAT HOSTIE (BOOST)
+go north
+go north
+look
+take hostie
+eat hostie
+
+# EAT ELIXIR (+5)
+go south
+go south
+go south
+look
+take elixir
+eat elixir
+
+# TEST ERREURS
+eat journal
+drop FDSVFVDS
+take VDSVDSV
+
+inventory

@@ -1,0 +1,48 @@
+look
+
+take journal
+inventory
+
+go west
+look
+take morceau1
+
+go east
+go south
+look
+take morceau3
+
+go east
+look
+take painbeni
+eat painbeni
+
+go north
+go north
+look
+take hostie
+eat hostie
+
+go south
+go south
+go south
+look
+take elixir
+eat elixir
+
+go down
+look
+take cle rouillée
+
+go up
+go north
+go west
+look
+take herbes
+eat herbes
+
+inventory
+
+back
+back
+look
