@@ -14,6 +14,8 @@ public class Player
     /** Historique des salles visitées */
     private final Stack<Room> aHistory; //important
 
+    private Item aItem;
+
     /**
      * Constructeur du joueur.
      * Initialise l’historique des déplacements.
@@ -63,5 +65,31 @@ public class Player
             return true;    // succès
         }
         return false;       // rien à faire
+    }
+
+    /**
+     * Permet de prendre un item
+     */
+    public void takeItem(Item item)
+    {
+        this.aItem = item;
+    }
+
+    /**
+     * Permet de déposer un item
+     */
+    public Item dropItem()
+    {
+        Item temp = this.aItem;
+        this.aItem = null;
+        return temp;
+    }
+
+    /**
+     * Vérifie si le joueur porte un item
+     */
+    public boolean hasItem()
+    {
+        return this.aItem != null;
     }
 }

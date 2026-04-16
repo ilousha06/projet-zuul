@@ -67,6 +67,8 @@ public class GameEngine
             case "quit" -> this.endGame();
             case "back" -> this.back(pCommand);
             case "test" -> this.test(pCommand);
+            case "take" -> this.take(pCommand);
+            case "drop" -> this.drop();
             default -> gui.println("Command not implemented.");
         }
     }
@@ -165,7 +167,7 @@ public class GameEngine
         gui.println("Thank you for playing. Good bye.");
         gui.enable(false);
     }
-    
+
     /**
      * Commande back :
      * permet de revenir à la salle précédente
@@ -224,6 +226,52 @@ public class GameEngine
         }
 
         scanner.close();
+    }
+
+    /**
+     * Commande take :
+     * Permet au joueur de prendre un item dans la salle.
+     */
+    private void take(Command pCommand)
+    {
+        if(!pCommand.hasSecondWord()) {
+            gui.println("Take what?");
+            return;
+        }
+
+        Item item = model.getCurrentRoom().getItem(pCommand.getSecondWord());
+
+        if(item == null) {
+            gui.println("Item not found.");
+            return;
+        }
+
+        if(model.getPlayer().hasItem()) {
+            gui.println("You already carry an item.");
+            return;
+        }
+
+        model.getPlayer().takeItem(item);
+        model.getCurrentRoom().removeItem(item);
+
+        gui.println("Item taken.");
+    }
+
+    /**
+     * Commande drop :
+     * Permet au joueur de déposer son item dans la salle.
+     */
+    private void drop()
+    {
+        if(!model.getPlayer().hasItem()) {
+            gui.println("You have nothing to drop.");
+            return;
+        }
+
+        Item item = model.getPlayer().dropItem();
+        model.getCurrentRoom().addItem(item);
+
+        gui.println("Item dropped.");
     }
 
 }

@@ -135,7 +135,7 @@ public class GameModel
 
         vPorteScellee.setExit("south", vSortieExtern);
         vSortieExtern.setExit("north", vPorteScellee);
-        
+
         // ITEMS
         Item journal = new Item("journal","un journal intime d'une ancienne novice", 1);
         Item pain = new Item("pain", "un pain au goût étrange", 1);
@@ -187,7 +187,7 @@ public class GameModel
         vInfirmerie.addItem(seringue);
         vChapPrinci.addItem(bible);
         vCloitreIntern.addItem(croix);
-        
+
         // DEPART
         this.aPlayer.setCurrentRoom(vDortoirEast);
     }
@@ -218,5 +218,13 @@ public class GameModel
     public boolean goBack()
     {
         return this.aPlayer.goBack();
+    }
+
+    /**
+     * Donne accès au joueur
+     */
+    public Player getPlayer()
+    {
+        return this.aPlayer;
     }
 }

@@ -128,4 +128,14 @@ public class Room
         }
         return null;
     }
+
+    /**
+     * Supprime un item de la salle
+     *
+     * @param item l'item à supprimer
+     */
+    public void removeItem(Item item)
+    {
+        this.aItems.remove(item);
+    }
 }
