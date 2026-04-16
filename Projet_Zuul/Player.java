@@ -16,18 +16,18 @@ public class Player
     /** Historique des salles visitées */
     private final Stack<Room> aHistory;
 
-    /** Poids maximum que le joueur peut porter */
-    private final int aMaxWeight;
-
-    /** Poids actuel transporté */
-    private int aCurrentWeight;
-
     /**
      * Collection des items portés par le joueur
      * (clé = nom de l'item, valeur = objet Item)
      * ENGROS permet de prendre plusieurs items
      */
     private final ItemList aItems;
+
+    /** Poids maximum que le joueur peut porter */
+    private final int aMaxWeight;
+
+    /** Poids actuel transporté */
+    private int aCurrentWeight;
 
     /**
      * Constructeur du joueur.
@@ -84,7 +84,7 @@ public class Player
     }
 
     /**
-     * Ajoute un item à l'inventaire du joueur avec limit de slot.
+     * Ajoute un item à l'inventaire du joueur avec limite de slot.
      *
      * @param item nom de l'item
      * @return l'item ajouté ou trop lourd
@@ -96,10 +96,12 @@ public class Player
         if(this.aCurrentWeight + weight > this.aMaxWeight) {
             return false; // trop lourd
         }
+        else {
+            this.aItems.addItem(item);
+            this.aCurrentWeight += weight;
+            return true;
+        }
 
-        this.aItems.addItem(item);
-        this.aCurrentWeight += weight;
-        return true;
     }
 
     /**
@@ -133,5 +135,26 @@ public class Player
     public boolean hasItem(String name)
     {
         return this.aItems.hasItem(name);
+    }
+
+    /**
+     * Retourne la description de l'inventaire du joueur.
+     * Délègue l'affichage à la classe ItemList.
+     *
+     * @return une chaîne décrivant les items portés
+     */
+    public String getInventoryString()
+    {
+        return this.aItems.getInventoryString();
+    }
+
+    /**
+     * Retourne le poids total des items portés par le joueur.
+     *
+     * @return le poids total
+     */
+    public int getTotalWeight()
+    {
+        return this.aCurrentWeight;
     }
 }

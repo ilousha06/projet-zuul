@@ -68,6 +68,7 @@ public class GameEngine
             case "test" -> this.test(pCommand);
             case "take" -> this.take(pCommand);
             case "drop" -> this.drop(pCommand);
+            case "inventaire" -> this.inventaire();
             default -> gui.println("Command not implemented.");
         }
     }
@@ -124,8 +125,8 @@ public class GameEngine
 
     /**
      * Commande look :
-     * - sans argument → affiche la salle
-     * - avec argument → affiche un item
+     * - sans argument = affiche la salle
+     * - avec argument = affiche un item
      */
     private void look(Command pCommand)
     {
@@ -286,6 +287,17 @@ public class GameEngine
 
         model.getCurrentRoom().addItem(item);
         gui.println("Item dropped.");
+    }
+
+    /**
+     * Commande inventaire :
+     * Affiche la liste des items portés par le joueur
+     * ainsi que leur poids total.
+     */
+    private void inventaire()
+    {
+        gui.println(model.getPlayer().getInventoryString());
+        gui.println("Total weight: " + model.getPlayer().getTotalWeight());
     }
 
 }

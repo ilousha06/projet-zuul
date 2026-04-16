@@ -94,4 +94,27 @@ public class ItemList
 
         return vResult.toString();
     }
+
+    /**
+     * Retourne une description de tous les items contenus
+     * dans la liste avec leur poids.
+     *
+     * @return une chaîne contenant les items et leurs poids
+     */
+    public String getInventoryString()
+    {
+        if(this.aItems.isEmpty()) return "Inventory is empty.";
+
+        StringBuilder res = new StringBuilder("Inventory:");
+
+        for(Item item : this.aItems.values()) {
+            res.append("\n - ")
+                    .append(item.getName())
+                    .append(" (")
+                    .append(item.getWeight())
+                    .append(")");
+        }
+
+        return res.toString();
+    }
 }
