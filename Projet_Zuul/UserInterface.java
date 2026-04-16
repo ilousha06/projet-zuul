@@ -191,6 +191,7 @@ public class UserInterface implements ActionListener
      */
     public void enable(boolean on)
     {
+
         entryField.setEditable(on);
     }
 }

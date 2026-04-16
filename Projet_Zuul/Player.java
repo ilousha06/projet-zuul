@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.Stack;
 
 /**
@@ -5,6 +6,7 @@ import java.util.Stack;
  * Elle gère :
  * - la position actuelle du joueur (salle courante)
  * - l’historique des déplacements (pour la commande back)
+ * - les items portés par le joueur (plusieurs items - exo 7.31)
  */
 public class Player
 {
@@ -12,17 +14,23 @@ public class Player
     private Room aCurrentRoom;
 
     /** Historique des salles visitées */
-    private final Stack<Room> aHistory; //important
+    private final Stack<Room> aHistory;
 
-    private Item aItem;
+    /**
+     * Collection des items portés par le joueur
+     * (clé = nom de l'item, valeur = objet Item)
+     * ENGROS permet de prendre plusieurs items
+     */
+    private final HashMap<String, Item> aItems;
 
     /**
      * Constructeur du joueur.
-     * Initialise l’historique des déplacements.
+     * Initialise l’historique et la collection d’items.
      */
     public Player()
     {
         this.aHistory = new Stack<>();
+        this.aItems = new HashMap<>();
     }
 
     /**
@@ -48,7 +56,7 @@ public class Player
     public void goRoom(final Room pNextRoom)
     {
         if(pNextRoom != null) {
-            this.aHistory.push(this.aCurrentRoom); // sauvegarde de la salle
+            this.aHistory.push(this.aCurrentRoom);
             this.aCurrentRoom = pNextRoom;
         }
     }
@@ -62,34 +70,43 @@ public class Player
     {
         if(!this.aHistory.isEmpty()) {
             this.aCurrentRoom = this.aHistory.pop();
-            return true;    // succès
+            return true;
         }
-        return false;       // rien à faire
+        return false;
     }
 
     /**
-     * Permet de prendre un item
+     * Ajoute un item à l'inventaire du joueur.
      */
     public void takeItem(Item item)
     {
-        this.aItem = item;
+        this.aItems.put(item.getName(), item);
     }
 
     /**
-     * Permet de déposer un item
+     * Retire un item de l'inventaire du joueur.
+     *
+     * @param name nom de l'item
+     * @return l'item retiré ou null s'il n'existe pas
      */
-    public Item dropItem()
+    public Item dropItem(String name)
     {
-        Item temp = this.aItem;
-        this.aItem = null;
-        return temp;
+        return this.aItems.remove(name);
     }
 
     /**
-     * Vérifie si le joueur porte un item
+     * Vérifie si le joueur possède au moins un item.
      */
     public boolean hasItem()
     {
-        return this.aItem != null;
+        return !this.aItems.isEmpty();
+    }
+
+    /**
+     * Vérifie si le joueur possède un item spécifique.
+     */
+    public boolean hasItem(String name)
+    {
+        return this.aItems.containsKey(name);
     }
 }

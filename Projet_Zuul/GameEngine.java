@@ -28,7 +28,6 @@ public class GameEngine
     {
         this.model = new GameModel();
         this.aParser = new Parser();
-        this.gui = new UserInterface(this);
     }
 
     /**
@@ -68,7 +67,7 @@ public class GameEngine
             case "back" -> this.back(pCommand);
             case "test" -> this.test(pCommand);
             case "take" -> this.take(pCommand);
-            case "drop" -> this.drop();
+            case "drop" -> this.drop(pCommand);
             default -> gui.println("Command not implemented.");
         }
     }
@@ -78,9 +77,9 @@ public class GameEngine
      */
     private void printWelcome()
     {
-        gui.println("=================================");
-        gui.println("        LA COMMUNAUTÉ             ");
-        gui.println("=================================");
+        gui.println("=============================");
+        gui.println("              LA COMMUNAUTÉ             ");
+        gui.println("=============================");
         gui.println("Type 'help' if you need help.");
         gui.println("");
         printLocationInfo();
@@ -231,6 +230,7 @@ public class GameEngine
     /**
      * Commande take :
      * Permet au joueur de prendre un item dans la salle.
+     * Suppression de la limite à un seul item
      */
     private void take(Command pCommand)
     {
@@ -239,18 +239,16 @@ public class GameEngine
             return;
         }
 
-        Item item = model.getCurrentRoom().getItem(pCommand.getSecondWord());
+        String itemName = pCommand.getSecondWord();
+
+        Item item = model.getCurrentRoom().getItem(itemName);
 
         if(item == null) {
             gui.println("Item not found.");
             return;
         }
 
-        if(model.getPlayer().hasItem()) {
-            gui.println("You already carry an item.");
-            return;
-        }
-
+        // plus de limite à 1 item
         model.getPlayer().takeItem(item);
         model.getCurrentRoom().removeItem(item);
 
@@ -259,18 +257,27 @@ public class GameEngine
 
     /**
      * Commande drop :
-     * Permet au joueur de déposer son item dans la salle.
+     * Permet au joueur de déposer un item dans la salle.
+     *
+     *  @param pCommand nom d'item
      */
-    private void drop()
+    private void drop(Command pCommand)
     {
-        if(!model.getPlayer().hasItem()) {
-            gui.println("You have nothing to drop.");
+        if(!pCommand.hasSecondWord()) {
+            gui.println("Drop what?");
             return;
         }
 
-        Item item = model.getPlayer().dropItem();
-        model.getCurrentRoom().addItem(item);
+        String name = pCommand.getSecondWord();
 
+        Item item = model.getPlayer().dropItem(name);
+
+        if(item == null) {
+            gui.println("You don't have this item.");
+            return;
+        }
+
+        model.getCurrentRoom().addItem(item);
         gui.println("Item dropped.");
     }
 

@@ -153,10 +153,10 @@ public class GameModel
 
         Item cleRouge = new Item("clé rouge","une clé rouge étrange", 1);
 
-        Item papier1 = new Item("morceau 1","un morceau de papier avec le chiffre 3", 1);
-        Item papier2 = new Item("morceau 2","un morceau de papier avec le chiffre 7", 1);
-        Item papier3 = new Item("morceau 3","un morceau de papier avec le chiffre 1", 1);
-        Item papier4 = new Item("morceau 4","un morceau de papier avec le chiffre 9", 1);
+        Item papier1 = new Item("morceau1","un morceau de papier avec le chiffre 3", 1);
+        Item papier2 = new Item("morceau2","un morceau de papier avec le chiffre 7", 1);
+        Item papier3 = new Item("morceau3","un morceau de papier avec le chiffre 1", 1);
+        Item papier4 = new Item("morceau4","un morceau de papier avec le chiffre 9", 1);
 
         Item seringue = new Item("seringue","une seringue contenant un liquide inconnu", 1);
         Item bible = new Item("bible","une vieille bible usée", 2);
