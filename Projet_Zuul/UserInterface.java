@@ -191,7 +191,15 @@ public class UserInterface implements ActionListener
      */
     public void enable(boolean on)
     {
-
+        
         entryField.setEditable(on);
+    }
+
+    /**
+     * Juste pour clear l'invite de commande 
+     */
+    public void clear()
+    {
+        log.setText("");
     }
 }

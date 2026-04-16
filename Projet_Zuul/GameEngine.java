@@ -117,6 +117,8 @@ public class GameEngine
         }
 
         model.goRoom(pCommand.getSecondWord());
+        gui.clear();
+
         printLocationInfo();
     }
 

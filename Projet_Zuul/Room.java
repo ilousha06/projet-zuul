@@ -21,7 +21,7 @@ public class Room
     private final String aImageName;
 
     /** Liste des items présents dans la pièce */
-    private final ArrayList<Item> aItems;
+    private final ItemList aItems;
 
     /**
      * Constructeur de la classe Room
@@ -31,7 +31,7 @@ public class Room
         this.aDescription = pDescription;
         this.aImageName = pImage;
         this.aExits = new HashMap<>();
-        this.aItems = new ArrayList<>(); // initialisation de la liste des items
+        this.aItems = new ItemList(); // initialisation de la liste des items
     }
 
     /**
@@ -91,13 +91,12 @@ public class Room
         return this.aImageName;
     }
 
-
     /**
      * Ajoute un item dans la pièce
      */
     public void addItem(Item item)
     {
-        this.aItems.add(item); // ajoute un objet dans la salle
+        this.aItems.addItem(item); // ajoute unobjet dans la salle
     }
 
     /**
@@ -105,17 +104,7 @@ public class Room
      */
     public String getItemString()
     {
-        if(aItems.isEmpty()) {
-            return "No item here.";
-        }
-
-        StringBuilder result = new StringBuilder("Items:");
-
-        for(Item item : aItems) {
-            result.append(" ").append(item.getName());
-        }
-
-        return result.toString();
+        return this.aItems.getItemString();
     }
 
     /**
@@ -123,10 +112,7 @@ public class Room
      */
     public Item getItem(String name)
     {
-        for(Item item : aItems) {
-            if(item.getName().equalsIgnoreCase(name)) return item;
-        }
-        return null;
+        return this.aItems.getItem(name);
     }
 
     /**
@@ -136,6 +122,6 @@ public class Room
      */
     public void removeItem(Item item)
     {
-        this.aItems.remove(item);
+        this.aItems.removeItem(item.getName());
     }
 }
