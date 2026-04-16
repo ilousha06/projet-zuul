@@ -16,6 +16,12 @@ public class Player
     /** Historique des salles visitées */
     private final Stack<Room> aHistory;
 
+    /** Poids maximum que le joueur peut porter */
+    private final int aMaxWeight;
+
+    /** Poids actuel transporté */
+    private int aCurrentWeight;
+
     /**
      * Collection des items portés par le joueur
      * (clé = nom de l'item, valeur = objet Item)
@@ -29,6 +35,8 @@ public class Player
      */
     public Player()
     {
+        this.aMaxWeight = 5;
+        this.aCurrentWeight = 0;
         this.aHistory = new Stack<>();
         this.aItems = new ItemList();
     }
@@ -76,11 +84,22 @@ public class Player
     }
 
     /**
-     * Ajoute un item à l'inventaire du joueur.
+     * Ajoute un item à l'inventaire du joueur avec limit de slot.
+     *
+     * @param item nom de l'item
+     * @return l'item ajouté ou trop lourd
      */
-    public void takeItem(Item item)
+    public boolean takeItem(Item item)
     {
+        int weight = item.getWeight();
+
+        if(this.aCurrentWeight + weight > this.aMaxWeight) {
+            return false; // trop lourd
+        }
+
         this.aItems.addItem(item);
+        this.aCurrentWeight += weight;
+        return true;
     }
 
     /**
@@ -91,7 +110,13 @@ public class Player
      */
     public Item dropItem(String name)
     {
-        return this.aItems.removeItem(name);
+        Item item = this.aItems.removeItem(name);
+
+        if(item != null) {
+            this.aCurrentWeight -= item.getWeight();
+        }
+
+        return item;
     }
 
     /**

@@ -250,6 +250,11 @@ public class GameEngine
             return;
         }
 
+        if(!model.getPlayer().takeItem(item)) {
+            gui.println("Too heavy.");
+            return;
+        }
+
         // plus de limite à 1 item
         model.getPlayer().takeItem(item);
         model.getCurrentRoom().removeItem(item);

@@ -30,10 +30,10 @@ public class Item
     }
 
     /**
-     * description complète de l’item
+     * Description complète de l’item
      */
     public String getLongDescription()
     {
-        return "Item: " + aName + " : " + aDescription + " (" + aWeight + " kg)";
+        return "Item: " + aName + " - " + aDescription + " (" + aWeight + " kg)";
     }
 }
