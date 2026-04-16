@@ -24,7 +24,7 @@ public class Player
     private final ItemList aItems;
 
     /** Poids maximum que le joueur peut porter */
-    private final int aMaxWeight;
+    private int aMaxWeight;
 
     /** Poids actuel transporté */
     private int aCurrentWeight;
@@ -156,5 +156,38 @@ public class Player
     public int getTotalWeight()
     {
         return this.aCurrentWeight;
+    }
+
+
+    /**
+     * Double la capacité de port du joueur
+     */
+    public void increaseMaxWeight()
+    {
+        this.aMaxWeight *= 2;
+    }
+
+    /**
+     * Ajoute une valeur au poids maximum
+     */
+    public void addMaxWeight(int value)
+    {
+        this.aMaxWeight += value;
+    }
+
+    /**
+     * Réduit la capacité du joueur
+     */
+    public void reduceMaxWeight(int value)
+    {
+        this.aMaxWeight -= value;
+    }
+
+    /**
+     * Retourne le poids max
+     */
+    public int getMaxWeight()
+    {
+        return this.aMaxWeight;
     }
 }

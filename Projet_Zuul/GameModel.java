@@ -39,23 +39,23 @@ public class GameModel
         Room vSalleCachee        = new Room("dans une salle cachee sous le puits", "font_puit.png");
         Room vSerreCultivee      = new Room("dans la serre cultivee abandonnee", "serre.png");
         Room vLabyrintheVeg      = new Room("dans le labyrinthe vegetal inquietant", "Labyrinthe.png");
-        Room vAutelExtern        = new Room("pres de l'autel exterieur en pierre", "autel.png");
+        Room vAutelExtern        = new Room("pres de l'autel exterieur en pierre", "autel.png"); // Pas encore d'image
         Room vCabaneJardin       = new Room("dans la cabane du jardinier", "Cabane.png");
         Room vChapPrinci         = new Room("dans la chapelle principale silencieuse", "Chapelle.png");
         Room vBiblioSacree       = new Room("dans la bibliotheque sacree", "Bibliotheque.png");
         Room vArchiInterd        = new Room("dans les archives interdites", "Archives.png");
         Room vCloitreIntern      = new Room("dans le cloitre interieur", "cloitre.png");
         Room vSalleSerments      = new Room("dans la salle des serments", "serment.png");
-        Room vBureauMatriarche   = new Room("dans le bureau de la matriarche", "bureau.png");
-        Room vAntichambreSacree  = new Room("dans l antichambre sacree", "antichambre.png");
-        Room vSalleRituels       = new Room("dans la salle des rituels", "rituels.png");
-        Room vSanctuaireIntern   = new Room("dans le sanctuaire interieur", "sanctuaire.png");
-        Room vCrypteAncienne     = new Room("dans la crypte ancienne", "crypte.png");
-        Room vChambreReliques    = new Room("dans la chambre des reliques", "reliques.png");
-        Room vEscalierCave       = new Room("dans l escalier menant a la cave", "escalier.png");
-        Room vCavePrincipale     = new Room("dans la cave principale", "cave.png");
-        Room vPorteScellee       = new Room("devant la porte scellee", "porte.png");
-        Room vSortieExtern       = new Room("devant la sortie exterieure", "sortie.png");
+        Room vBureauMatriarche   = new Room("dans le bureau de la matriarche", "bureau.png");// Pas encore d'image
+        Room vAntichambreSacree  = new Room("dans l antichambre sacree", "antichambre.png");// Pas encore d'image
+        Room vSalleRituels       = new Room("dans la salle des rituels", "rituels.png");// Pas encore d'image
+        Room vSanctuaireIntern   = new Room("dans le sanctuaire interieur", "sanctuaire.png");// Pas encore d'image
+        Room vCrypteAncienne     = new Room("dans la crypte ancienne", "crypte.png");// Pas encore d'image
+        Room vChambreReliques    = new Room("dans la chambre des reliques", "reliques.png");// Pas encore d'image
+        Room vEscalierCave       = new Room("dans l escalier menant a la cave", "escalier.png");// Pas encore d'image
+        Room vCavePrincipale     = new Room("dans la cave principale", "cave.png");// Pas encore d'image
+        Room vPorteScellee       = new Room("devant la porte scellee", "porte.png");// Pas encore d'image
+        Room vSortieExtern       = new Room("devant la sortie exterieure", "sortie.png");// Pas encore d'image
 
         // Connexions
         vCourIntern.setExit("north", vDortoirOuest);
@@ -72,7 +72,7 @@ public class GameModel
 
         vRefectoire.setExit("east", vCourIntern);
         vRefectoire.setExit("north", vCuisine);
-        vCuisine.setExit("west", vRefectoire);
+        vCuisine.setExit("south", vRefectoire);
 
         vJardinCentral.setExit("north", vCourIntern);
         vJardinCentral.setExit("south", vPuitsAncien);
@@ -98,22 +98,22 @@ public class GameModel
         vSalleSerments.setExit("south", vHallCeremonies);
         vSalleSerments.setExit("east", vAntichambreSacree);
 
-        vAntichambreSacree.setExit("south", vSalleSerments);
-        vAntichambreSacree.setExit("north", vBureauMatriarche);
+        vAntichambreSacree.setExit("west", vSalleSerments);
+        vAntichambreSacree.setExit("south", vBureauMatriarche);
 
-        vBureauMatriarche.setExit("south", vAntichambreSacree);
+        vBureauMatriarche.setExit("north", vAntichambreSacree);
 
-        vChapPrinci.setExit("north", vHallCeremonies);
-        vChapPrinci.setExit("south", vSanctuaireIntern);
-        vChapPrinci.setExit("east", vBiblioSacree);
-        vChapPrinci.setExit("west", vCloitreIntern);
+        vCloitreIntern.setExit("north", vHallCeremonies);
+        vCloitreIntern.setExit("south", vSanctuaireIntern);
+        vCloitreIntern.setExit("east", vBiblioSacree);
+        vCloitreIntern.setExit("west", vChapPrinci);
 
-        vCloitreIntern.setExit("east", vChapPrinci);
-        vBiblioSacree.setExit("west", vChapPrinci);
+        vChapPrinci.setExit("east", vCloitreIntern);
+        vBiblioSacree.setExit("west", vCloitreIntern);
         vBiblioSacree.setExit("north", vArchiInterd);
         vArchiInterd.setExit("south", vBiblioSacree);
 
-        vSanctuaireIntern.setExit("north", vChapPrinci);
+        vSanctuaireIntern.setExit("north", vCloitreIntern);
         vSanctuaireIntern.setExit("south", vCrypteAncienne);
         vSanctuaireIntern.setExit("east", vSalleRituels);
 
@@ -146,7 +146,7 @@ public class GameModel
 
         Item bougie = new Item("bougie noire","une bougie noire à mettre dans la lanterne", 1);
         Item symbole = new Item("symbole","un symbole gravé étrange dans une feuille", 1);
-        Item relique = new Item("relique","une relique ancienne", 2);
+        Item amulette = new Item("amulette","une amulette ancienne", 2);
 
         Item cleFinale = new Item("clé ancienne","une clé ancienne massive", 2);
         Item outil = new Item("outil","un outil cassé", 2);
@@ -172,7 +172,7 @@ public class GameModel
 
         vSalleSerments.addItem(bougie);
         vSanctuaireIntern.addItem(symbole);
-        vCrypteAncienne.addItem(relique);
+        vCrypteAncienne.addItem(amulette);
 
         vCavePrincipale.addItem(cleFinale);
         vCabaneJardin.addItem(outil);
@@ -187,6 +187,24 @@ public class GameModel
         vInfirmerie.addItem(seringue);
         vChapPrinci.addItem(bible);
         vCloitreIntern.addItem(croix);
+
+        // ITEMS spéciaux
+        Item hostie = new Item("hostie", "une hostie sacrée mystérieuse", 1);
+        Item elixir = new Item("elixir", "un élixir noir puissant", 2);
+        Item herbes = new Item("herbes", "des herbes médicinales", 1);
+        Item painBeni = new Item("painbeni", "un pain béni", 1);
+        Item encens = new Item("encens", "un encens mystique", 1);
+        Item poison = new Item("poison", "un liquide toxique dangereux", 1);
+        Item relique = new Item("relique", "une relique sacrée ancienne", 2);
+
+        // PLACEMENT
+        vChapPrinci.addItem(hostie);
+        vSalleRituels.addItem(elixir);
+        vInfirmerie.addItem(herbes);
+        vRefectoire.addItem(painBeni);
+        vSanctuaireIntern.addItem(encens);
+        vCavePrincipale.addItem(poison);
+        vCrypteAncienne.addItem(relique);
 
         // DEPART
         this.aPlayer.setCurrentRoom(vDortoirEast);

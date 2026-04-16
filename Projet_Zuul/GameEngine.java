@@ -62,7 +62,7 @@ public class GameEngine
             case "help" -> this.printHelp();
             case "go" -> this.goRoom(pCommand);
             case "look" -> this.look(pCommand);
-            case "eat" -> this.eat();
+            case "eat" -> this.eat(pCommand);
             case "quit" -> this.endGame();
             case "back" -> this.back(pCommand);
             case "test" -> this.test(pCommand);
@@ -151,14 +151,6 @@ public class GameEngine
             // on affiche les détails de l'objet
             gui.println(item.getLongDescription());
         }
-    }
-
-    /**
-     * Commande eat : affiche un message.
-     */
-    private void eat()
-    {
-        gui.println("You have eaten now and you are not hungry any more.");
     }
 
     /**
@@ -298,6 +290,74 @@ public class GameEngine
     {
         gui.println(model.getPlayer().getInventoryString());
         gui.println("Total weight: " + model.getPlayer().getTotalWeight());
+    }
+
+    /**
+     * Commande eat :
+     * Permet de manger un item porté par le joueur.
+     * Chaque item possède un effet différent.
+     */
+    private void eat(Command pCommand)
+    {
+        if(!pCommand.hasSecondWord()) {
+            gui.println("Eat what?");
+            return;
+        }
+
+        String name = pCommand.getSecondWord();
+
+        if(!model.getPlayer().hasItem(name)) {
+            gui.println("You don't have this item.");
+            return;
+        }
+
+        Item item = model.getPlayer().dropItem(name);
+
+        // EFFETS
+
+        // DOUBLE CAPACITE
+        switch (name) {
+            case "hostie" -> {
+                model.getPlayer().increaseMaxWeight();
+                gui.println("Vous consommez l'hostie sacrée... votre force augmente.");
+            }
+
+            // BONUS +5
+            case "elixir" -> {
+                model.getPlayer().addMaxWeight(5);
+                gui.println("L'élixir vous rend plus puissant.");
+            }
+
+            // SOIN (RP)
+            case "herbes" -> gui.println("Les herbes apaisent votre esprit.");
+
+
+            // RP
+            case "painbeni" -> gui.println("Le pain béni vous apporte du réconfort.");
+
+
+            // RP mystique
+            case "encens" -> gui.println("Une vision étrange traverse votre esprit...");
+
+
+            // MALUS
+            case "poison" -> {
+                model.getPlayer().reduceMaxWeight(3);
+                gui.println("Le poison vous affaiblit...");
+            }
+
+            // GROS BONUS
+            case "relique" -> {
+                model.getPlayer().addMaxWeight(10);
+                gui.println("La relique vous donne une force immense !");
+            }
+
+            // AUTRES
+            default -> {
+                gui.println("Cet objet ne peut pas être mangé.");
+                model.getPlayer().takeItem(item);
+            }
+        }
     }
 
 }
