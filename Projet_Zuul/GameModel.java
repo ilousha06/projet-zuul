@@ -1,27 +1,23 @@
-import java.util.Stack;
 /**
  * La classe GameModel représente le modèle du jeu (architecture MVC).
  * Elle contient toute la logique du jeu :
  * - création des salles
- * - gestion des déplacements du joueur
+ * - gestion des déplacements du joueur via la classe Player
  *
  * Elle ne gère ni l'affichage ni les interactions utilisateur.
  */
 public class GameModel
 {
-    /** Pièce actuelle du joueur */
-    private Room aCurrentRoom;
-
-    /** Historique des salles visitées (pour la commande back) */
-    private final Stack<Room> aHistory; // stocke les anciennes salles
+    /** Joueur du jeu (contient position et historique) */
+    private final Player aPlayer;
 
     /**
      * Constructeur du modèle.
-     * Initialise les salles et la position de départ.
+     * Initialise le joueur et les salles du jeu.
      */
     public GameModel()
     {
-        this.aHistory = new Stack<>(); // initialisation de l'historique
+        this.aPlayer = new Player();
         createRooms();
     }
 
@@ -139,9 +135,7 @@ public class GameModel
 
         vPorteScellee.setExit("south", vSortieExtern);
         vSortieExtern.setExit("north", vPorteScellee);
-
-        this.aCurrentRoom = vDortoirEast;
-
+        
         // ITEMS
         Item journal = new Item("journal","un journal intime d'une ancienne novice", 1);
         Item pain = new Item("pain", "un pain au goût étrange", 1);
@@ -193,43 +187,36 @@ public class GameModel
         vInfirmerie.addItem(seringue);
         vChapPrinci.addItem(bible);
         vCloitreIntern.addItem(croix);
+        
+        // DEPART
+        this.aPlayer.setCurrentRoom(vDortoirEast);
     }
 
     /**
      * Retourne la pièce actuelle du joueur.
-     *
-     * @return la pièce courante
      */
     public Room getCurrentRoom()
     {
-        return aCurrentRoom;
+        return this.aPlayer.getCurrentRoom();
     }
 
     /**
      * Déplace le joueur dans une direction donnée.
-     * Si la sortie existe, le joueur change de pièce.
-     *
-     * @param direction la direction à emprunter
      */
     public void goRoom(String direction)
     {
-        Room next = aCurrentRoom.getExit(direction);
+        Room next = this.aPlayer.getCurrentRoom().getExit(direction);
 
         if(next != null) {
-            aHistory.push(aCurrentRoom); // sauvegarde de la salle actuelle
-            aCurrentRoom = next;
+            this.aPlayer.goRoom(next);
         }
     }
 
     /**
-     * Permet de revenir à la salle précédente
+     * Permet de revenir à la salle précédente.
      */
     public boolean goBack()
     {
-        if(!aHistory.isEmpty()) {
-            aCurrentRoom = aHistory.pop();
-            return true; // succès
-        }
-        return false; // rien à faire
+        return this.aPlayer.goBack();
     }
 }
