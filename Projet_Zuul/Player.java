@@ -4,9 +4,9 @@ import java.util.Stack;
 /**
  * La classe Player représente le joueur du jeu.
  * Elle gère :
- * - la position actuelle du joueur (salle courante)
- * - l’historique des déplacements (pour la commande back)
- * - les items portés par le joueur (plusieurs items - exo 7.31)
+ * - la position actuelle du joueur
+ * - l’historique des déplacements
+ * - les items portés par le joueur
  */
 public class Player
 {
@@ -21,7 +21,7 @@ public class Player
      * (clé = nom de l'item, valeur = objet Item)
      * ENGROS permet de prendre plusieurs items
      */
-    private final HashMap<String, Item> aItems;
+    private final ItemList aItems;
 
     /**
      * Constructeur du joueur.
@@ -30,7 +30,7 @@ public class Player
     public Player()
     {
         this.aHistory = new Stack<>();
-        this.aItems = new HashMap<>();
+        this.aItems = new ItemList();
     }
 
     /**
@@ -80,7 +80,7 @@ public class Player
      */
     public void takeItem(Item item)
     {
-        this.aItems.put(item.getName(), item);
+        this.aItems.addItem(item);
     }
 
     /**
@@ -91,7 +91,7 @@ public class Player
      */
     public Item dropItem(String name)
     {
-        return this.aItems.remove(name);
+        return this.aItems.removeItem(name);
     }
 
     /**
@@ -107,6 +107,6 @@ public class Player
      */
     public boolean hasItem(String name)
     {
-        return this.aItems.containsKey(name);
+        return this.aItems.hasItem(name);
     }
 }
