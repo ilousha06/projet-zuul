@@ -1,4 +1,3 @@
-import java.util.HashMap;
 import java.util.Stack;
 
 /**
@@ -6,7 +5,8 @@ import java.util.Stack;
  * Elle gère :
  * - la position actuelle du joueur
  * - l’historique des déplacements
- * - les items portés par le joueur
+ * - les items portés
+ * - le système de poids (limite + affichage)
  */
 public class Player
 {
@@ -16,11 +16,7 @@ public class Player
     /** Historique des salles visitées */
     private final Stack<Room> aHistory;
 
-    /**
-     * Collection des items portés par le joueur
-     * (clé = nom de l'item, valeur = objet Item)
-     * ENGROS permet de prendre plusieurs items
-     */
+    /** Inventaire du joueur */
     private final ItemList aItems;
 
     /** Poids maximum que le joueur peut porter */
@@ -31,7 +27,7 @@ public class Player
 
     /**
      * Constructeur du joueur.
-     * Initialise l’historique et la collection d’items.
+     * Initialise l’historique et l’inventaire.
      */
     public Player()
     {
@@ -42,7 +38,7 @@ public class Player
     }
 
     /**
-     * Retourne la salle actuelle du joueur.
+     * Retourne la salle actuelle.
      */
     public Room getCurrentRoom()
     {
@@ -50,7 +46,7 @@ public class Player
     }
 
     /**
-     * Définit la salle actuelle du joueur (position initiale).
+     * Définit la salle actuelle.
      */
     public void setCurrentRoom(final Room pRoom)
     {
@@ -59,7 +55,6 @@ public class Player
 
     /**
      * Déplace le joueur vers une nouvelle salle.
-     * La salle actuelle est sauvegardée dans l’historique.
      */
     public void goRoom(final Room pNextRoom)
     {
@@ -70,9 +65,7 @@ public class Player
     }
 
     /**
-     * Permet de revenir à la salle précédente.
-     *
-     * @return true si le retour est possible, false sinon
+     * Retourne à la salle précédente.
      */
     public boolean goBack()
     {
@@ -84,31 +77,23 @@ public class Player
     }
 
     /**
-     * Ajoute un item à l'inventaire du joueur avec limite de slot.
-     *
-     * @param item nom de l'item
-     * @return l'item ajouté ou trop lourd
+     * Ajoute un item si le poids le permet.
      */
     public boolean takeItem(Item item)
     {
         int weight = item.getWeight();
 
         if(this.aCurrentWeight + weight > this.aMaxWeight) {
-            return false; // trop lourd
-        }
-        else {
-            this.aItems.addItem(item);
-            this.aCurrentWeight += weight;
-            return true;
+            return false;
         }
 
+        this.aItems.addItem(item);
+        this.aCurrentWeight += weight;
+        return true;
     }
 
     /**
-     * Retire un item de l'inventaire du joueur.
-     *
-     * @param name nom de l'item
-     * @return l'item retiré ou null s'il n'existe pas
+     * Retire un item de l’inventaire.
      */
     public Item dropItem(String name)
     {
@@ -122,7 +107,7 @@ public class Player
     }
 
     /**
-     * Vérifie si le joueur possède au moins un item.
+     * Vérifie si inventaire vide.
      */
     public boolean hasItem()
     {
@@ -130,7 +115,7 @@ public class Player
     }
 
     /**
-     * Vérifie si le joueur possède un item spécifique.
+     * Vérifie si un item existe.
      */
     public boolean hasItem(String name)
     {
@@ -138,10 +123,7 @@ public class Player
     }
 
     /**
-     * Retourne la description de l'inventaire du joueur.
-     * Délègue l'affichage à la classe ItemList.
-     *
-     * @return une chaîne décrivant les items portés
+     * Retourne l'inventaire sous forme de texte.
      */
     public String getInventoryString()
     {
@@ -149,18 +131,23 @@ public class Player
     }
 
     /**
-     * Retourne le poids total des items portés par le joueur.
-     *
-     * @return le poids total
+     * Retourne le poids actuel.
      */
     public int getTotalWeight()
     {
         return this.aCurrentWeight;
     }
 
+    /**
+     * Retourne le poids maximum.
+     */
+    public int getMaxWeight()
+    {
+        return this.aMaxWeight;
+    }
 
     /**
-     * Double la capacité de port du joueur
+     * Double la capacité maximale.
      */
     public void increaseMaxWeight()
     {
@@ -168,7 +155,7 @@ public class Player
     }
 
     /**
-     * Ajoute une valeur au poids maximum
+     * Ajoute au poids max.
      */
     public void addMaxWeight(int value)
     {
@@ -176,7 +163,7 @@ public class Player
     }
 
     /**
-     * Réduit la capacité du joueur
+     * Réduit le poids max.
      */
     public void reduceMaxWeight(int value)
     {
@@ -184,10 +171,41 @@ public class Player
     }
 
     /**
-     * Retourne le poids max
+     * Génère une barre visuelle du poids transporté.
+     * Exemple : [████░░░░░░]
+     *
+     * @return barre de progression du poids
      */
-    public int getMaxWeight()
+    public String getWeightBar()
     {
-        return this.aMaxWeight;
+        int maxBars = 10;
+
+        // éviter division par 0
+        if(aMaxWeight == 0) return "[----------]";
+
+        int filled = (int)((double)aCurrentWeight / aMaxWeight * maxBars);
+
+        StringBuilder bar = new StringBuilder("[");
+
+        for(int i = 0; i < maxBars; i++) {
+            if(i < filled) {
+                bar.append("█");
+            } else {
+                bar.append("=");
+            }
+        }
+
+        bar.append("]");
+        return bar.toString();
+    }
+
+    /**
+     * Retourne une version complète du poids (texte + barre).
+     *
+     * @return ex : Poids : 3/5 [████======]
+     */
+    public String getWeightInfo()
+    {
+        return "Poids : " + aCurrentWeight + "/" + aMaxWeight + " " + getWeightBar();
     }
 }

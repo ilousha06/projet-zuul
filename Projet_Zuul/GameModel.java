@@ -93,7 +93,7 @@ public class GameModel
 
         vHallCeremonies.setExit("west", vCourIntern);
         vHallCeremonies.setExit("north", vSalleSerments);
-        vHallCeremonies.setExit("south", vChapPrinci);
+        vHallCeremonies.setExit("south", vCloitreIntern);
 
         vSalleSerments.setExit("south", vHallCeremonies);
         vSalleSerments.setExit("east", vAntichambreSacree);

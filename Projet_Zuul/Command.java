@@ -2,7 +2,7 @@
 /**
  * Classe Command - une commande du jeu d'aventure Zuul.
  *
- * @author Vous !
+ * @author Damiri Ilyas
  */
 public class Command
 {

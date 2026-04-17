@@ -235,7 +235,6 @@ public class GameEngine
         }
 
         String itemName = pCommand.getSecondWord();
-
         Item item = model.getCurrentRoom().getItem(itemName);
 
         if(item == null) {
@@ -243,16 +242,15 @@ public class GameEngine
             return;
         }
 
+        // UNE SEULE FOIS
         if(!model.getPlayer().takeItem(item)) {
             gui.println("Too heavy.");
             return;
         }
 
-        // plus de limite à 1 item
-        model.getPlayer().takeItem(item);
         model.getCurrentRoom().removeItem(item);
 
-        gui.println("Item taken.");
+        gui.println(item.getName() + " taken.");
     }
 
     /**
@@ -283,13 +281,25 @@ public class GameEngine
 
     /**
      * Commande inventaire :
-     * Affiche la liste des items portés par le joueur
-     * ainsi que leur poids total.
+     * Affiche :
+     * - les items portés par le joueur
+     * - le poids total
+     * - une barre visuelle de charge
      */
     private void inventaire()
     {
-        gui.println(model.getPlayer().getInventoryString());
-        gui.println("Total weight: " + model.getPlayer().getTotalWeight());
+        Player player = model.getPlayer();
+
+        gui.println("----- INVENTAIRE -----");
+
+        if(player.hasItem()) {
+            gui.println(player.getInventoryString());
+        } else {
+            gui.println("Inventory is empty.");
+        }
+
+        gui.println(player.getWeightInfo());
+
     }
 
     /**
