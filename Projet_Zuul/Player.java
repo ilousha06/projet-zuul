@@ -172,7 +172,7 @@ public class Player
 
     /**
      * Génère une barre visuelle du poids transporté.
-     * Exemple : [████░░░░░░]
+     * Exemple : [████=====]
      *
      * @return barre de progression du poids
      */

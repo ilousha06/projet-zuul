@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.io.InputStream;
+import java.util.Objects;
 
 /**
  * La classe GameEngine représente le contrôleur du jeu (architecture MVC).
@@ -20,6 +21,9 @@ public class GameEngine
     /** Modèle du jeu (logique) */
     private final GameModel model;
 
+    /**Limiteur de déplacement */
+    private int suspicion ;
+
     /**
      * Constructeur du moteur du jeu.
      * Initialise le modèle et le parser.
@@ -28,6 +32,9 @@ public class GameEngine
     {
         this.model = new GameModel();
         this.aParser = new Parser();
+
+        // Pour la barre de déplacement
+        this.suspicion = 0;
     }
 
     /**
@@ -40,6 +47,7 @@ public class GameEngine
     {
         this.gui = pUserInterface;
         this.printWelcome();
+        gui.setSuspicion(suspicion);
     }
 
     /**
@@ -79,7 +87,7 @@ public class GameEngine
     private void printWelcome()
     {
         gui.println("=============================");
-        gui.println("              LA COMMUNAUTÉ             ");
+        gui.println("        LA COMMUNAUTÉ        ");
         gui.println("=============================");
         gui.println("Type 'help' if you need help.");
         gui.println("");
@@ -107,20 +115,69 @@ public class GameEngine
 
     /**
      * Gère le déplacement du joueur.
+     * Le joueur change de salle selon la direction donnée.
+     * Chaque déplacement augmente la suspicion de la communauté.
+     * Si la suspicion atteint 100%, le joueur perd la partie.
      *
      * @param pCommand la commande contenant la direction
      */
     private void goRoom(Command pCommand)
     {
-        if (!pCommand.hasSecondWord()) {
+        // vérifie si une direction est donnée
+        if(!pCommand.hasSecondWord()) {
             gui.println("Go where ?");
             return;
         }
 
+        // sauvegarde la salle actuelle
+        Room oldRoom = model.getCurrentRoom();
+
+        // déplacement
         model.goRoom(pCommand.getSecondWord());
+
+        // vérifie si la salle a changé
+        if(oldRoom != model.getCurrentRoom())
+        {
+            // augmente la suspicion
+            suspicion += 5;
+
+            // limite maximale
+            if(suspicion > 100) {
+                suspicion = 100;
+            }
+
+            // met à jour la barre
+            gui.setSuspicion(suspicion);
+        }
+
+        // nettoie l'écran
         gui.clear();
 
+        // affiche la salle actuelle
         printLocationInfo();
+
+        // messages d'ambiance
+        if(suspicion >= 30 && suspicion < 60) {
+            gui.println("Vous sentez des regards sur vous...");
+        }
+
+        if(suspicion >= 60 && suspicion < 90) {
+            gui.println("Les sœurs commencent à se méfier.");
+        }
+
+        if(suspicion >= 90) {
+            gui.println("La matriarche sait quelque chose...");
+        }
+
+        // fin du jeu
+        if(suspicion >= 100)
+        {
+            gui.println("");
+            gui.println("La communauté vous a démasquée.");
+            gui.println("Vous avez été capturée.");
+
+            endGame();
+        }
     }
 
     /**
