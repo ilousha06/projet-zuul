@@ -133,12 +133,6 @@ public class Room
      */
     public boolean isExit(Room pRoom)
     {
-        for(Room room : this.aExits.values()) {
-            if(room == pRoom) {
-                return true;
-            }
-        }
-
-        return false;
+        return this.aExits.containsValue(pRoom);
     }
 }
