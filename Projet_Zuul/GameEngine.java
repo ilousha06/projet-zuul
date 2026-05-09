@@ -114,68 +114,59 @@ public class GameEngine
     }
 
     /**
-     * Gère le déplacement du joueur.
-     * Le joueur change de salle selon la direction donnée.
-     * Chaque déplacement augmente la suspicion de la communauté.
-     * Si la suspicion atteint 100%, le joueur perd la partie.
+     * Gere le deplacement du joueur.
+     * Si le joueur descend dans le puits, un message d'avertissement
+     * s'affiche avant le deplacement sans effacer l'ecran.
      *
      * @param pCommand la commande contenant la direction
      */
     private void goRoom(Command pCommand)
     {
-        // vérifie si une direction est donnée
-        if(!pCommand.hasSecondWord()) {
+        if (!pCommand.hasSecondWord()) {
             gui.println("Go where ?");
             return;
         }
 
-        // sauvegarde la salle actuelle
+        String direction = pCommand.getSecondWord();
+
+        // Detecte la trap door AVANT le deplacement
+        boolean trapDoor = direction.equals("down")
+                && model.getCurrentRoom().getImageName().equals("Puits.png");
+
+        // Si c'est la trap door, on affiche le message et on s'arrete
+        // Le joueur devra cliquer une 2eme fois pour confirmer
+        if (trapDoor && !model.getPlayer().isTrapDoorConfirmed()) {
+            gui.println("");
+            gui.println("Une fois descendue, vous ne pourrez peut-etre plus revenir.");
+            gui.println("Tapez 'down' une deuxieme fois pour confirmer.");
+            model.getPlayer().setTrapDoorConfirmed(true);
+            return;
+        }
+
+        // Remet la confirmation a false pour la prochaine fois
+        model.getPlayer().setTrapDoorConfirmed(false);
+
+        // Deplacement normal
         Room oldRoom = model.getCurrentRoom();
+        model.goRoom(direction);
 
-        // déplacement
-        model.goRoom(pCommand.getSecondWord());
-
-        // vérifie si la salle a changé
-        if(oldRoom != model.getCurrentRoom())
-        {
-            // augmente la suspicion
+        if (oldRoom != model.getCurrentRoom()) {
             suspicion += 5;
-
-            // limite maximale
-            if(suspicion > 100) {
-                suspicion = 100;
-            }
-
-            // met à jour la barre
+            if (suspicion > 100) suspicion = 100;
             gui.setSuspicion(suspicion);
         }
 
-        // nettoie l'écran
         gui.clear();
-
-        // affiche la salle actuelle
         printLocationInfo();
 
-        // messages d'ambiance
-        if(suspicion >= 30 && suspicion < 60) {
-            gui.println("Vous sentez des regards sur vous...");
-        }
-
-        if(suspicion >= 60 && suspicion < 90) {
-            gui.println("Les sœurs commencent à se méfier.");
-        }
-
-        if(suspicion >= 90) {
-            gui.println("La matriarche sait quelque chose...");
-        }
-
-        // fin du jeu
-        if(suspicion >= 100)
-        {
+        // Messages de suspicion
+        if (suspicion >= 30 && suspicion < 60) gui.println("Vous sentez des regards sur vous...");
+        if (suspicion >= 60 && suspicion < 90) gui.println("Les soeurs commencent a se mefier.");
+        if (suspicion >= 90) gui.println("La matriarche sait quelque chose...");
+        if (suspicion >= 100) {
             gui.println("");
-            gui.println("La communauté vous a démasquée.");
-            gui.println("Vous avez été capturée.");
-
+            gui.println("La communaute vous a demasquee.");
+            gui.println("Vous avez ete capturee.");
             endGame();
         }
     }
@@ -221,8 +212,9 @@ public class GameEngine
 
     /**
      * Commande back :
-     * permet de revenir à la salle précédente
-     * et gère les erreurs (second mot)
+     * permet de revenir à la salle précédente.
+     * Certaines salles possèdent des trap doors
+     * empêchant le retour en arrière.
      */
     private void back(Command pCommand)
     {
@@ -232,12 +224,26 @@ public class GameEngine
             return;
         }
 
-        // pas d'historique
-        if(!model.goBack()) {
+        // récupère la salle précédente
+        Room previousRoom = model.getPlayer().getPreviousRoom();
+
+        // aucune salle précédente
+        if(previousRoom == null) {
             gui.println("No previous room.");
             return;
         }
+
+        // vérifie si retour possible
+        if(!model.getCurrentRoom().isExit(previousRoom)) {
+            gui.println("Impossible de revenir en arrière.");
+            model.getPlayer().clearHistory();
+            return;
+        }
+
         // retour normal
+        model.goBack();
+
+        gui.clear();
         printLocationInfo();
     }
 

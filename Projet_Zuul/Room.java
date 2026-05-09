@@ -124,4 +124,21 @@ public class Room
     {
         this.aItems.removeItem(item.getName());
     }
+
+    /**
+     * Vérifie si une salle fait partie des sorties.
+     *
+     * @param pRoom salle à vérifier
+     * @return true si la salle est une sortie
+     */
+    public boolean isExit(Room pRoom)
+    {
+        for(Room room : this.aExits.values()) {
+            if(room == pRoom) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

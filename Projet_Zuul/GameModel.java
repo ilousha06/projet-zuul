@@ -81,7 +81,7 @@ public class GameModel
 
         vPuitsAncien.setExit("north", vJardinCentral);
         vPuitsAncien.setExit("down", vSalleCachee);
-        vSalleCachee.setExit("up", vPuitsAncien);
+        // vSalleCachee.setExit("up", vPuitsAncien);
 
         vLabyrintheVeg.setExit("east", vJardinCentral);
         vLabyrintheVeg.setExit("west", vCabaneJardin);

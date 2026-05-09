@@ -1,19 +1,20 @@
 import java.util.Stack;
 
 /**
- * La classe Player représente le joueur du jeu.
- * Elle gère :
+ * La classe Player represente le joueur du jeu.
+ * Elle gere :
  * - la position actuelle du joueur
- * - l’historique des déplacements
- * - les items portés
- * - le système de poids (limite + affichage)
+ * - l'historique des deplacements
+ * - les items portes
+ * - le systeme de poids (limite + affichage)
+ * - la confirmation de la trap door
  */
 public class Player
 {
     /** Salle actuelle du joueur */
     private Room aCurrentRoom;
 
-    /** Historique des salles visitées */
+    /** Historique des salles visitees */
     private final Stack<Room> aHistory;
 
     /** Inventaire du joueur */
@@ -22,19 +23,43 @@ public class Player
     /** Poids maximum que le joueur peut porter */
     private int aMaxWeight;
 
-    /** Poids actuel transporté */
+    /** Poids actuel transporte */
     private int aCurrentWeight;
+
+    /** Indique si le joueur a deja vu l'avertissement de la trap door */
+    private boolean trapDoorConfirmed;
 
     /**
      * Constructeur du joueur.
-     * Initialise l’historique et l’inventaire.
+     * Initialise l'historique et l'inventaire.
      */
     public Player()
     {
-        this.aMaxWeight = 5;
-        this.aCurrentWeight = 0;
-        this.aHistory = new Stack<>();
-        this.aItems = new ItemList();
+        this.aMaxWeight       = 5;
+        this.aCurrentWeight   = 0;
+        this.aHistory         = new Stack<>();
+        this.aItems           = new ItemList();
+        this.trapDoorConfirmed = false;
+    }
+
+    /**
+     * Retourne true si le joueur a deja vu l'avertissement de la trap door.
+     *
+     * @return true si la confirmation est en attente
+     */
+    public boolean isTrapDoorConfirmed()
+    {
+        return trapDoorConfirmed;
+    }
+
+    /**
+     * Definit si le joueur a confirme vouloir passer la trap door.
+     *
+     * @param confirmed true si l'avertissement a ete affiche
+     */
+    public void setTrapDoorConfirmed(boolean confirmed)
+    {
+        trapDoorConfirmed = confirmed;
     }
 
     /**
@@ -46,7 +71,7 @@ public class Player
     }
 
     /**
-     * Définit la salle actuelle.
+     * Definit la salle actuelle.
      */
     public void setCurrentRoom(final Room pRoom)
     {
@@ -54,22 +79,22 @@ public class Player
     }
 
     /**
-     * Déplace le joueur vers une nouvelle salle.
+     * Deplace le joueur vers une nouvelle salle.
      */
     public void goRoom(final Room pNextRoom)
     {
-        if(pNextRoom != null) {
+        if (pNextRoom != null) {
             this.aHistory.push(this.aCurrentRoom);
             this.aCurrentRoom = pNextRoom;
         }
     }
 
     /**
-     * Retourne à la salle précédente.
+     * Retourne a la salle precedente.
      */
     public boolean goBack()
     {
-        if(!this.aHistory.isEmpty()) {
+        if (!this.aHistory.isEmpty()) {
             this.aCurrentRoom = this.aHistory.pop();
             return true;
         }
@@ -82,32 +107,28 @@ public class Player
     public boolean takeItem(Item item)
     {
         int weight = item.getWeight();
-
-        if(this.aCurrentWeight + weight > this.aMaxWeight) {
+        if (this.aCurrentWeight + weight > this.aMaxWeight) {
             return false;
         }
-
         this.aItems.addItem(item);
         this.aCurrentWeight += weight;
         return true;
     }
 
     /**
-     * Retire un item de l’inventaire.
+     * Retire un item de l'inventaire.
      */
     public Item dropItem(String name)
     {
         Item item = this.aItems.removeItem(name);
-
-        if(item != null) {
+        if (item != null) {
             this.aCurrentWeight -= item.getWeight();
         }
-
         return item;
     }
 
     /**
-     * Vérifie si inventaire vide.
+     * Verifie si l'inventaire est vide.
      */
     public boolean hasItem()
     {
@@ -115,7 +136,7 @@ public class Player
     }
 
     /**
-     * Vérifie si un item existe.
+     * Verifie si un item existe dans l'inventaire.
      */
     public boolean hasItem(String name)
     {
@@ -147,7 +168,7 @@ public class Player
     }
 
     /**
-     * Double la capacité maximale.
+     * Double la capacite maximale.
      */
     public void increaseMaxWeight()
     {
@@ -155,7 +176,7 @@ public class Player
     }
 
     /**
-     * Ajoute au poids max.
+     * Ajoute de la capacite au poids max.
      */
     public void addMaxWeight(int value)
     {
@@ -163,7 +184,7 @@ public class Player
     }
 
     /**
-     * Réduit le poids max.
+     * Reduit le poids max.
      */
     public void reduceMaxWeight(int value)
     {
@@ -171,41 +192,54 @@ public class Player
     }
 
     /**
-     * Génère une barre visuelle du poids transporté.
-     * Exemple : [████=====]
+     * Genere une barre visuelle du poids transporte.
+     * Exemple : [████======]
      *
      * @return barre de progression du poids
      */
     public String getWeightBar()
     {
         int maxBars = 10;
-
-        // éviter division par 0
-        if(aMaxWeight == 0) return "[----------]";
-
-        int filled = (int)((double)aCurrentWeight / aMaxWeight * maxBars);
-
+        if (aMaxWeight == 0) return "[----------]";
+        int filled = (int)((double) aCurrentWeight / aMaxWeight * maxBars);
         StringBuilder bar = new StringBuilder("[");
-
-        for(int i = 0; i < maxBars; i++) {
-            if(i < filled) {
-                bar.append("█");
-            } else {
-                bar.append("=");
-            }
+        for (int i = 0; i < maxBars; i++) {
+            bar.append(i < filled ? "█" : "=");
         }
-
         bar.append("]");
         return bar.toString();
     }
 
     /**
-     * Retourne une version complète du poids (texte + barre).
+     * Retourne une version complete du poids (texte + barre).
+     * Exemple : Poids : 3/5 [████======]
      *
-     * @return ex : Poids : 3/5 [████======]
+     * @return texte complet du poids
      */
     public String getWeightInfo()
     {
         return "Poids : " + aCurrentWeight + "/" + aMaxWeight + " " + getWeightBar();
+    }
+
+    /**
+     * Vide l'historique des salles.
+     * Utilise apres une trap door.
+     */
+    public void clearHistory()
+    {
+        this.aHistory.clear();
+    }
+
+    /**
+     * Retourne la salle precedente sans la supprimer.
+     *
+     * @return salle precedente ou null si aucune
+     */
+    public Room getPreviousRoom()
+    {
+        if (this.aHistory.isEmpty()) {
+            return null;
+        }
+        return this.aHistory.peek();
     }
 }
