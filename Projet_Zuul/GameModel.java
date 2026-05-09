@@ -49,20 +49,20 @@ public class GameModel
         Room vAutelExtern       = new Room("pres de l autel exterieur en pierre",        "autel.png");
         Room vCabaneJardin      = new Room("dans la cabane du jardinier",                "Cabane.png");
         Room vChapPrinci        = new Room("dans la chapelle principale silencieuse",    "Chapelle.png");
-        Room vBiblioSacree      = new Room("dans la bibliotheque sacree",                "Bibliotheque.png");
-        Room vCloitreIntern     = new Room("dans le cloitre interieur",                  "cloitre.png");
         Room vSalleSerments     = new Room("dans la salle des serments",                 "serment.png");
         Room vBureauMatriarche  = new Room("dans le bureau de la matriarche",            "bureau.png");
         Room vAntichambreSacree = new Room("dans l antichambre sacree",                  "antichambre.png");
         Room vSalleRituels      = new Room("dans la salle des rituels",                  "rituels.png");
         Room vChambreReliques   = new Room("dans la chambre des reliques",               "reliques.png");
-        Room vEscalierCave      = new Room("dans l escalier menant a la cave",           "escalier.png");
-        Room vCavePrincipale    = new Room("dans la cave principale",                    "cave.png");
-        Room vPorteScellee      = new Room("devant la porte scellee",                    "porte.png");
-        Room vSortieExtern      = new Room("devant la sortie exterieure",                "sortie.png");
 
         // Salles gardees en references pour pouvoir les modifier
-        this.vSalleCachee      = new Room("dans une salle cachee sous le puits",  "font_puit.png");
+        this.vEscalierCave      = new Room("dans l escalier menant a la cave",           "escalier.png");
+        this.vCavePrincipale    = new Room("dans la cave principale",                    "cave.png");
+        this.vPorteScellee      = new Room("devant la porte scellee",                    "porte.png");
+        this.vSortieExtern      = new Room("devant la sortie exterieure",                "sortie.png");
+        this.vCloitreIntern     = new Room("dans le cloitre interieur",                  "cloitre.png");
+        this.vBiblioSacree      = new Room("dans la bibliotheque sacree",                "Bibliotheque.png");
+        this.vSalleCachee      = new Room("dans une salle cachee sous le puits",  "salle.png");
         this.vCrypteAncienne   = new Room("dans la crypte ancienne",              "crypte.png");
         this.vSanctuaireIntern = new Room("dans le sanctuaire interieur",         "sanctuaire.png");
         this.vArchiInterd      = new Room("dans les archives interdites",          "Archives.png");
@@ -121,23 +121,23 @@ public class GameModel
         // Bibliotheque : sortie north vers archives verrouillee (ajoutee apres avec livre + clearchive)
         vBiblioSacree.setExit("west", vCloitreIntern);
 
-        vSanctuaireIntern.setExit("north", vCloitreIntern);
-        vSanctuaireIntern.setExit("south", vCrypteAncienne);
-        vSanctuaireIntern.setExit("east",  vSalleRituels);
+        this.vSanctuaireIntern.setExit("north", vCloitreIntern);
+        this.vSanctuaireIntern.setExit("south", vCrypteAncienne);
+        this.vSanctuaireIntern.setExit("east",  vSalleRituels);
         vSalleRituels.setExit("west", vSanctuaireIntern);
 
-        vCrypteAncienne.setExit("north", vSanctuaireIntern);
-        vCrypteAncienne.setExit("east",  vChambreReliques);
-        vCrypteAncienne.setExit("south", vEscalierCave);
+        this.vCrypteAncienne.setExit("north", vSanctuaireIntern);
+        this.vCrypteAncienne.setExit("east",  vChambreReliques);
+        this.vCrypteAncienne.setExit("south", vEscalierCave);
         vChambreReliques.setExit("west", vCrypteAncienne);
 
         // Salle cachee vers crypte verrouillee (ouverte apres pioche)
-        vSalleCachee.setExit("east", vCrypteAncienne);
+        this.vSalleCachee.setExit("east", vCrypteAncienne);
 
-        vArchiInterd.setExit("south", vBiblioSacree);
+        this.vArchiInterd.setExit("south", vBiblioSacree);
 
         // Escalier vers cave verrouillee (ouverte apres code + clerouge + encens)
-        vEscalierCave.setExit("north", vCrypteAncienne);
+        this.vEscalierCave.setExit("north", vCrypteAncienne);
 
         vCavePrincipale.setExit("up",    vEscalierCave);
         vCavePrincipale.setExit("south", vPorteScellee);
@@ -216,6 +216,16 @@ public class GameModel
         // Beamer dans la chambre des reliques
         this.beamer = new Beamer();
         vChambreReliques.addItem(this.beamer);
+
+        // Items qui reduisent la suspicion
+        Item voile    = new Item("voile",    "un voile de novice - vous permet de vous fondre dans la masse",  1);
+        Item chapelet = new Item("chapelet", "un chapelet - les soeurs vous font davantage confiance",          1);
+        Item habit    = new Item("habit",    "un habit de soeur complete - personne ne vous remarque",          2);
+
+        // Placement des items anti-suspicion
+        vDortoirOuest.addItem(voile);
+        vChapPrinci.addItem(chapelet);
+        vRefectoire.addItem(habit);
 
         // Depart du joueur
         this.aPlayer.setCurrentRoom(vDortoirEast);

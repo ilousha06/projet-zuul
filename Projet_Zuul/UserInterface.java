@@ -365,7 +365,7 @@ public class UserInterface implements ActionListener
             String item = entryField.getText().trim();
             entryField.setText("");
             if (item.isEmpty()) { println("Entrez un objet a utiliser."); return; }
-            engine.interpretCommand("eat " + item);
+            engine.interpretCommand("use " + item);
         }
         else if (src == takeButton) {
             String item = entryField.getText().trim();
@@ -658,10 +658,12 @@ public class UserInterface implements ActionListener
     static class ImageButton extends JLabel
     {
         private final List<ActionListener> listeners = new ArrayList<>();
+        private ImageIcon normalIcon;
+        private ImageIcon hoverIcon;
 
         /**
          * @param imagePath chemin vers l'image PNG du bouton
-         * @param command commande envoyee au jeu lors du clic
+         * @param command   commande envoyee au jeu lors du clic
          */
         ImageButton(String imagePath, String command)
         {
@@ -672,15 +674,32 @@ public class UserInterface implements ActionListener
 
             // Charge l'image ou cree un placeholder si elle est absente
             if (new File(imagePath).exists()) {
-                setIcon(new ImageIcon(new ImageIcon(imagePath)
-                        .getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH)));
+                normalIcon = new ImageIcon(new ImageIcon(imagePath)
+                        .getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH));
             } else {
-                setIcon(buildPlaceholder(command));
+                normalIcon = buildPlaceholder(command);
             }
+
+            // Cree la version avec aureole doree pour le survol
+            hoverIcon = buildHoverIcon(normalIcon);
+            setIcon(normalIcon);
 
             addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseClicked(MouseEvent e) {
+                public void mouseEntered(MouseEvent e)
+                {
+                    setIcon(hoverIcon);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e)
+                {
+                    setIcon(normalIcon);
+                }
+
+                @Override
+                public void mouseClicked(MouseEvent e)
+                {
                     ActionEvent ae = new ActionEvent(
                             ImageButton.this, ActionEvent.ACTION_PERFORMED, command);
                     for (ActionListener l : listeners) l.actionPerformed(ae);
@@ -689,8 +708,41 @@ public class UserInterface implements ActionListener
         }
 
         /**
+         * Cree une version de l'icone avec une aureole doree autour.
+         * Affichee quand la souris survole le bouton.
+         *
+         * @param src l'icone d'origine
+         * @return l'icone avec aureole
+         */
+        private static ImageIcon buildHoverIcon(ImageIcon src)
+        {
+            int w = src.getIconWidth();
+            int h = src.getIconHeight();
+            int marge = 6;
+
+            // On cree une image plus grande pour avoir de la place pour l aureole
+            BufferedImage buf = new BufferedImage(w + marge * 2, h + marge * 2, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = buf.createGraphics();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            // Aureole doree autour de l image
+            g2.setColor(new Color(220, 175, 80, 180));
+            g2.setStroke(new BasicStroke(3f));
+            g2.drawRoundRect(1, 1, w + marge * 2 - 3, h + marge * 2 - 3, 12, 12);
+
+            // Fond dore tres leger
+            g2.setColor(new Color(220, 175, 80, 40));
+            g2.fillRoundRect(1, 1, w + marge * 2 - 3, h + marge * 2 - 3, 12, 12);
+
+            // Image originale centree
+            g2.drawImage(src.getImage(), marge, marge, null);
+            g2.dispose();
+
+            return new ImageIcon(buf);
+        }
+
+        /**
          * Cree un carre de remplacement quand l'image est absente.
-         * Affiche le nom de la commande en texte dore.
          *
          * @param label texte a afficher dans le carre
          * @return l'icone de remplacement
@@ -724,6 +776,5 @@ public class UserInterface implements ActionListener
         {
             listeners.add(l);
         }
-
     }
 }

@@ -22,14 +22,21 @@ public class GameEngine
     /** Niveau de suspicion de la communaute */
     private int suspicion;
 
+    /** Indique si la map est actuellement affichee a la place de l image de salle */
+    private boolean mapAffichee = false;
+
+    /** Interface musicale */
+    private final SoundManager sound;
+
     /**
      * Constructeur du moteur du jeu.
      */
     public GameEngine()
     {
-        this.model     = new GameModel();
-        this.aParser   = new Parser();
+        this.model = new GameModel();
+        this.aParser = new Parser();
         this.suspicion = 0;
+        this.sound = new SoundManager();
     }
 
     /**
@@ -59,19 +66,19 @@ public class GameEngine
         }
 
         switch (pCommand.getCommandWord()) {
-            case "help"       -> this.printHelp();
-            case "go"         -> this.goRoom(pCommand);
-            case "look"       -> this.look(pCommand);
-            case "quit"       -> this.endGame();
-            case "back"       -> this.back(pCommand);
-            case "test"       -> this.test(pCommand);
-            case "take"       -> this.take(pCommand);
-            case "drop"       -> this.drop(pCommand);
+            case "help" -> this.printHelp();
+            case "go" -> this.goRoom(pCommand);
+            case "look" -> this.look(pCommand);
+            case "quit" -> this.endGame();
+            case "back" -> this.back(pCommand);
+            case "test" -> this.test(pCommand);
+            case "take" -> this.take(pCommand);
+            case "drop" -> this.drop(pCommand);
             case "inventaire" -> this.inventaire();
-            case "charge"     -> this.charge();
-            case "fire"       -> this.fire();
-            case "use"        -> this.use(pCommand);
-            default           -> gui.println("Command not implemented.");
+            case "charge" -> this.charge();
+            case "fire" -> this.fire();
+            case "use" -> this.use(pCommand);
+            default -> gui.println("Command not implemented.");
         }
     }
 
@@ -84,51 +91,67 @@ public class GameEngine
         gui.println("      LA COMMUNAUTE          ");
         gui.println("=============================");
         gui.println("");
-        gui.println("Vous etes une journaliste infiltree dans une communaute");
-        gui.println("religieuse secrete. Des femmes disparaissent depuis des annees.");
-        gui.println("Votre but : trouver les preuves et sortir vivante.");
+        gui.println("Vous etes une jeune novice arrivee recemment dans ce couvent.");
+        gui.println("Depuis quelques jours, quelque chose ne va pas.");
+        gui.println("Des soeurs disparaissent. Personne ne parle.");
+        gui.println("La Mere Superieure surveille tout.");
         gui.println("");
+        gui.println("Votre but : comprendre ce qui se passe et fuir avant d etre decouverte.");
         gui.println("Tapez 'help' pour voir les commandes.");
         gui.println("");
         printLocationInfo();
     }
 
     /**
-     * Affiche l aide avec toutes les commandes.
+     * Affiche l aide avec toutes les commandes et affiche la map en image.
+     * Un deuxieme clic sur help reaffiche la salle actuelle.
      */
     private void printHelp()
     {
+        sound.playEffect("help.wav");
+        // Si la map est deja affichee, on revient a la salle
+        if (mapAffichee) {
+            mapAffichee = false;
+            gui.clear();
+            printLocationInfo();
+            return;
+        }
+
+        // Sinon on affiche l aide et la map
+        mapAffichee = true;
+        gui.showImage("map.png");
+
         gui.clear();
         gui.println("");
-        gui.println("+---------------------------------+");
-        gui.println("|           AIDE DU JEU           |");
-        gui.println("+---------------------------------+");
+        gui.println("---------------------------------");
+        gui.println("           AIDE DU JEU           ");
+        gui.println("---------------------------------");
         gui.println("");
-        gui.println("  [ DEPLACEMENT ]");
+        gui.println("   DEPLACEMENT ");
         gui.println("    go north / south / east / west");
         gui.println("    go up / go down");
-        gui.println("    back  ->  salle precedente");
+        gui.println("    back : salle precedente");
         gui.println("");
         gui.println("  [ EXPLORATION ]");
-        gui.println("    look           ->  observer la salle");
-        gui.println("    look <objet>   ->  examiner un objet");
+        gui.println("    look : observer la salle");
+        gui.println("    look <objet> : examiner un objet");
         gui.println("");
-        gui.println("  [ INVENTAIRE ]");
-        gui.println("    take <objet>   ->  ramasser");
-        gui.println("    drop <objet>   ->  deposer");
-        gui.println("    inventaire     ->  voir vos objets");
-        gui.println("    use  <objet>   ->  utiliser ou consommer");
+        gui.println("   INVENTAIRE ");
+        gui.println("    take <objet> : ramasser");
+        gui.println("    drop <objet> : deposer");
+        gui.println("    inventaire : voir vos objets");
+        gui.println("    use  <objet> : utiliser ou consommer");
         gui.println("");
-        gui.println("  [ BEAMER ]");
-        gui.println("    charge         ->  memoriser la salle");
-        gui.println("    fire           ->  se teleporter");
+        gui.println("   BEAMER ");
+        gui.println("    charge : memoriser la salle");
+        gui.println("    fire : se teleporter");
         gui.println("");
-        gui.println("  [ SYSTEME ]");
-        gui.println("    help           ->  afficher l aide");
-        gui.println("    quit           ->  quitter le jeu");
+        gui.println("   SYSTEME ");
+        gui.println("    help : afficher l aide / revenir");
+        gui.println("    quit : quitter le jeu");
         gui.println("");
-        gui.println("+---------------------------------+");
         gui.println("");
+        gui.println("  Appuyez sur Help pour revenir a la salle.");
     }
 
     /**
@@ -137,17 +160,47 @@ public class GameEngine
     private void printLocationInfo()
     {
         gui.println(model.getCurrentRoom().getLongDescription());
-        gui.showImage(model.getCurrentRoom().getImageName());
+
+        String image = model.getCurrentRoom().getImageName();
+
+        gui.showImage(image);
+
+        // Gestion des musiques selon les zones
+
+        switch (image) {
+            // Zone communaute
+            case "Dortoire_East.png", "Dortoire_Ouest.png", "refectoire.png", "Cuisine.png", "Infirmerie.png" ->
+                    sound.changeZoneMusic("communaute");
+
+            // Zone jardins
+            case "Jardin.png", "Puits.png", "Labyrinthe.png", "serre.png", "Cabane.png", "autel.png", "Cour.png"->
+                    sound.changeZoneMusic("jardin");
+
+            // Zone hall principal
+            case "Hall.png", "serment.png", "antichambre.png", "bureau.png", "Chapelle.png", "cloitre.png" ->
+                    sound.changeZoneMusic("hall");
+
+            // Zones interdites
+            case "Bibliotheque.png", "Archives.png", "sanctuaire.png", "rituels.png", "crypte.png", "reliques.png" ->
+                    sound.changeZoneMusic("interdit");
+
+            // Cave
+            case "escalier.png", "cave.png", "porte.png" ->
+                    sound.changeZoneMusic("cave");
+        }
 
         // Verifie si le joueur a gagne
-        if (model.getCurrentRoom().getImageName().equals("sortie.png")
-                && model.getPlayer().hasItem("document")) {
+        if (image.equals("sortie.png") && model.getPlayer().hasItem("document")) {
+
+            SoundEffect.play("win.wav");
+            gui.clear();
             gui.println("");
-            gui.println("Vous sortez dans la nuit froide.");
-            gui.println("Les preuves sont dans vos mains.");
-            gui.println("La verite sera connue de tous.");
+            gui.println("Vous poussez la porte et sortez dans la nuit froide.");
+            gui.println("Le document est dans vos mains.");
+            gui.println("La verite sur la Communaute sera enfin connue.");
             gui.println("");
-            gui.println("FELICITATIONS - Vous avez termine le jeu !");
+            gui.println("VOUS AVEZ GAGNE !");
+
             gui.enable(false);
         }
     }
@@ -165,7 +218,7 @@ public class GameEngine
             return;
         }
 
-        String direction     = pCommand.getSecondWord();
+        String direction = pCommand.getSecondWord();
         String imageActuelle = model.getCurrentRoom().getImageName();
 
         // Trap door du puits : avertissement avant descente
@@ -180,20 +233,19 @@ public class GameEngine
         }
         model.getPlayer().setTrapDoorConfirmed(false);
 
-        // Porte 1 : Cloitre -> Sanctuaire (necessite clematri)
+        // Cloitre vers Sanctuaire (necessite clematri)
         if (direction.equals("south") && imageActuelle.equals("cloitre.png")) {
             if (!model.getPlayer().hasItem("clematri")) {
                 gui.println("La porte est fermee a cle.");
                 gui.println("Il vous faut la cle de la Matriarche.");
                 return;
             }
-            // Ouvre le passage definitivement
             model.ouvrirPassageSanctuaire();
             gui.println("La cle de la Matriarche tourne dans la serrure...");
             gui.println("Le passage vers le sanctuaire est ouvert.");
         }
 
-        // Porte 2 : Bibliotheque -> Archives (necessite livre + clearchive)
+        // Bibliotheque vers Archives (necessite livre + clearchive)
         if (direction.equals("north") && imageActuelle.equals("Bibliotheque.png")) {
             if (!model.getPlayer().hasItem("livre")) {
                 gui.println("Une inscription dit : Seul celui qui sait peut entrer.");
@@ -205,26 +257,23 @@ public class GameEngine
                 gui.println("Il vous faut la cle des archives.");
                 return;
             }
-            // Ouvre le passage definitivement
             model.ouvrirPassageArchives();
             gui.println("Le livre et la cle ouvrent les archives interdites...");
         }
 
-        // Porte 3 : Escalier -> Cave (necessite code + clerouge + encens)
+        // Escalier vers Cave (necessite code + clerouge + encens)
         if (direction.equals("down") && imageActuelle.equals("escalier.png")) {
             if (!verifierCodeCave()) return;
-            // Ouvre le passage definitivement
             model.ouvrirPassageCave();
         }
 
-        // Porte 4 : Porte scellee -> Sortie (necessite clefinale)
+        // Porte scellee vers Sortie (necessite clefinale)
         if (direction.equals("south") && imageActuelle.equals("porte.png")) {
             if (!model.getPlayer().hasItem("clefinale")) {
                 gui.println("La porte scellee resiste.");
                 gui.println("Il vous faut la cle finale.");
                 return;
             }
-            // Ouvre le passage definitivement
             model.ouvrirPorteScellee();
             gui.println("La cle finale tourne... la porte s ouvre.");
             gui.println("La liberte est a portee de main !");
@@ -235,18 +284,19 @@ public class GameEngine
         model.goRoom(direction);
 
         if (oldRoom != model.getCurrentRoom()) {
-            suspicion += 5;
+            suspicion += 4;
             if (suspicion > 100) suspicion = 100;
             gui.setSuspicion(suspicion);
         }
 
         gui.clear();
+        mapAffichee = false;
         printLocationInfo();
 
         // Messages de suspicion
         if (suspicion >= 30 && suspicion < 60) gui.println("Vous sentez des regards sur vous...");
         if (suspicion >= 60 && suspicion < 90) gui.println("Les soeurs commencent a se mefier.");
-        if (suspicion >= 90)                   gui.println("La matriarche sait quelque chose...");
+        if (suspicion >= 90) gui.println("La matriarche sait quelque chose...");
 
         if (suspicion >= 100) {
             gui.println("");
@@ -312,10 +362,18 @@ public class GameEngine
 
     /**
      * Termine le jeu.
+     * Affiche l image de game over si le joueur a ete capture.
      */
     private void endGame()
     {
-        gui.println("Thank you for playing. Good bye.");
+        SoundEffect.play("gameover.wav");
+        gui.showImage("gameover.png");
+        gui.clear();
+        gui.println("");
+        gui.println("La Mere Superieure vous a demasquee.");
+        gui.println("Vous avez ete emmene dans les profondeurs du couvent.");
+        gui.println("Personne ne saura jamais ce qui s est passe ici.");
+        gui.println("");
         gui.enable(false);
     }
 
@@ -345,6 +403,7 @@ public class GameEngine
 
         model.goBack();
         gui.clear();
+        mapAffichee = false;
         printLocationInfo();
     }
 
@@ -397,6 +456,7 @@ public class GameEngine
         }
         model.getCurrentRoom().removeItem(item);
         gui.println(item.getName() + " taken.");
+        SoundEffect.play("take.wav");
     }
 
     /**
@@ -415,6 +475,7 @@ public class GameEngine
         }
         model.getCurrentRoom().addItem(item);
         gui.println("Item dropped.");
+        SoundEffect.play("drop.wav");
     }
 
     /**
@@ -452,21 +513,42 @@ public class GameEngine
         }
 
         Item item = model.getPlayer().dropItem(name);
+        SoundEffect.play("use.wav");
 
         switch (name) {
 
             // Items consommables avec effets
-            case "hostie"   -> { model.getPlayer().increaseMaxWeight(); gui.println("Vous consommez l hostie sacree... votre force double."); }
-            case "elixir"   -> { model.getPlayer().addMaxWeight(5);     gui.println("L elixir noir augmente votre capacite."); }
-            case "herbes"   ->   gui.println("Les herbes apaisent votre esprit.");
-            case "painbeni" ->   gui.println("Le pain beni vous apporte du reconfort.");
-            case "encens"   ->   gui.println("Une vision etrange traverse votre esprit... vous voyez des visages.");
-            case "poison"   -> { model.getPlayer().reduceMaxWeight(3);  gui.println("Le poison vous affaiblit..."); }
-            case "relique"  -> { model.getPlayer().addMaxWeight(10);    gui.println("La relique vous donne une force immense !"); }
+            case "hostie" -> { model.getPlayer().increaseMaxWeight(); gui.println("Vous consommez l hostie sacree... votre force double."); }
+            case "elixir" -> { model.getPlayer().addMaxWeight(5);     gui.println("L elixir noir augmente votre capacite."); }
+            case "herbes" -> gui.println("Les herbes apaisent votre esprit.");
+            case "painbeni" -> gui.println("Le pain beni vous apporte du reconfort.");
+            case "encens" -> gui.println("Une vision etrange traverse votre esprit... vous voyez des visages.");
+            case "poison" ->{ model.getPlayer().reduceMaxWeight(3);  gui.println("Le poison vous affaiblit..."); }
+            case "relique" ->{ model.getPlayer().addMaxWeight(10);    gui.println("La relique vous donne une force immense !"); }
+
+            // Items qui reduisent la suspicion
+            case "voile" -> {
+                suspicion -= 20;
+                if (suspicion < 0) suspicion = 0;
+                gui.setSuspicion(suspicion);
+                gui.println("Vous enfilez le voile. Vous vous fondez parmi les soeurs.");
+            }
+            case "chapelet" -> {
+                suspicion -= 35;
+                if (suspicion < 0) suspicion = 0;
+                gui.setSuspicion(suspicion);
+                gui.println("Vous priez avec le chapelet. Les soeurs vous font davantage confiance.");
+            }
+            case "habit" -> {
+                suspicion -= 40;
+                if (suspicion < 0) suspicion = 0;
+                gui.setSuspicion(suspicion);
+                gui.println("Vous enfilez l habit de soeur. Personne ne vous remarque plus.");
+            }
 
             // Pioche : casse le mur dans la salle cachee
             case "pioche" -> {
-                if (!model.getCurrentRoom().getImageName().equals("font_puit.png")) {
+                if (!model.getCurrentRoom().getImageName().equals("salle.png")) {
                     gui.println("Il n y a pas de mur a casser ici.");
                     model.getPlayer().takeItem(item);
                     return;
@@ -537,6 +619,7 @@ public class GameEngine
         gui.println("Vous vous retrouvez la ou vous etiez avant.");
         gui.println("");
         gui.clear();
+        mapAffichee = false;
         printLocationInfo();
         gui.println("Le beamer tombe en poussiere. Il ne peut plus etre utilise.");
     }

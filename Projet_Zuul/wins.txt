@@ -1,0 +1,72 @@
+take habit
+go west
+take morceau1
+take voile
+go south
+
+go west
+go north
+take morceau2
+
+go south
+go east
+drop habit
+go south
+take morceau3
+go west
+use voile
+go west
+take pioche
+go east
+go east
+go north
+drop pioche
+take habit
+go east
+go north
+go east
+go south
+use habit
+take document
+take clematri
+go north
+go west
+go south
+go south
+go west
+drop morceau1
+take hostie
+use hostie
+take morceau1
+take chapelet
+go east
+go north
+go west
+take pioche
+go south
+go south
+go down 
+go down
+take cle
+use chapelet
+go east
+take relique
+use relique
+go north 
+take encens
+go east
+take clerouge
+go west
+go south
+go east
+take morceau4
+go west
+go south
+go down
+take clefinale
+go south
+go south
+
+
+
+

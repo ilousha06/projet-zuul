@@ -20,7 +20,7 @@ public class Beamer extends Item
     {
         super("beamer", "Une relique occulte qui pulse d'une energie etrange.", 1);
         this.chargedRoom = null;
-        this.used        = false;
+        this.used = false;
     }
 
     /**
@@ -72,13 +72,12 @@ public class Beamer extends Item
 
     /**
      * Recharge le beamer pour pouvoir le reutiliser.
-     * Ne fonctionne que si le beamer a deja ete utilise.
-     *
-     * @return true si la recharge a reussi, false sinon
+     * Reinitialise l etat utilise et vide la salle memorisee.
+     * Necessite un cristal de recharge pour etre appele.
      */
     public void recharge()
     {
-        this.used        = false;
+        this.used = false;
         this.chargedRoom = null;
     }
 }

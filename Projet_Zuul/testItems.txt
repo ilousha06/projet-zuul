@@ -1,49 +1,55 @@
 look
-
-# TAKE
 take journal
-inventory
-
+inventaire
 drop journal
-inventory
-
-# reprendre
+inventaire
 take journal
 
-go west
 go west
 look
-take herbes
-inventory
-eat herbes
-inventory
+take voile
+use voile
+inventaire
 
-# EAT PAIN
 go east
 go south
-go east
 look
 take painbeni
-eat painbeni
+take habit
+use painbeni
+use habit
+inventaire
 
-# EAT HOSTIE (BOOST)
 go north
 go north
 look
 take hostie
-eat hostie
+use hostie
+inventaire
 
-# EAT ELIXIR (+5)
 go south
 go south
 go south
 look
 take elixir
-eat elixir
+use elixir
+inventaire
 
-# TEST ERREURS
-eat journal
-drop FDSVFVDS
-take VDSVDSV
+go west
+go west
+look
+take herbes
+use herbes
 
-inventory
+go east
+go east
+go north
+look
+take chapelet
+use chapelet
+inventaire
+
+use poison
+take XXXXX
+drop XXXXX
+use XXXXX

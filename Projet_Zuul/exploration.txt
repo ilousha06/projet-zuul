@@ -12,11 +12,14 @@ look
 go south
 go south
 look
+go east
+look
+go west
+go south
 go down
 look
 go up
 back
-eat
 go north
 go east
 look

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -8,6 +10,7 @@ import java.util.Stack;
  * - les items portes
  * - le systeme de poids (limite + affichage)
  * - la confirmation de la trap door
+ * - la liste des salles visitees (pour le beamer)
  */
 public class Player
 {
@@ -29,17 +32,21 @@ public class Player
     /** Indique si le joueur a deja vu l'avertissement de la trap door */
     private boolean trapDoorConfirmed;
 
+    /** Liste de toutes les salles deja visitees (pour le beamer) */
+    private final List<Room> visitedRooms;
+
     /**
      * Constructeur du joueur.
-     * Initialise l'historique et l'inventaire.
+     * Initialise l'historique, l'inventaire et la liste des salles visitees.
      */
     public Player()
     {
-        this.aMaxWeight       = 5;
-        this.aCurrentWeight   = 0;
-        this.aHistory         = new Stack<>();
-        this.aItems           = new ItemList();
+        this.aMaxWeight = 5;
+        this.aCurrentWeight = 0;
+        this.aHistory = new Stack<>();
+        this.aItems = new ItemList();
         this.trapDoorConfirmed = false;
+        this.visitedRooms = new ArrayList<>();
     }
 
     /**
@@ -63,7 +70,20 @@ public class Player
     }
 
     /**
-     * Retourne la salle actuelle.
+     * Retourne la liste des salles deja visitees.
+     * Utilisee par le beamer pour choisir une destination.
+     *
+     * @return liste des salles visitees
+     */
+    public List<Room> getVisitedRooms()
+    {
+        return this.visitedRooms;
+    }
+
+    /**
+     * Retourne la salle actuelle du joueur.
+     *
+     * @return la salle dans laquelle se trouve le joueur
      */
     public Room getCurrentRoom()
     {
@@ -71,7 +91,9 @@ public class Player
     }
 
     /**
-     * Definit la salle actuelle.
+     * Definit la salle de depart du joueur.
+     *
+     * @param pRoom la salle a definir comme position actuelle
      */
     public void setCurrentRoom(final Room pRoom)
     {
@@ -80,17 +102,27 @@ public class Player
 
     /**
      * Deplace le joueur vers une nouvelle salle.
+     * Enregistre la salle actuelle dans l historique et dans les salles visitees.
+     *
+     * @param pNextRoom la salle vers laquelle le joueur se deplace
      */
     public void goRoom(final Room pNextRoom)
     {
         if (pNextRoom != null) {
             this.aHistory.push(this.aCurrentRoom);
             this.aCurrentRoom = pNextRoom;
+
+            // Enregistre la salle si elle n'a pas encore ete visitee
+            if (!visitedRooms.contains(pNextRoom)) {
+                visitedRooms.add(pNextRoom);
+            }
         }
     }
 
     /**
-     * Retourne a la salle precedente.
+     * Retourne a la salle precedente via l historique.
+     *
+     * @return true si le retour a reussi, false si l historique est vide
      */
     public boolean goBack()
     {
@@ -102,7 +134,10 @@ public class Player
     }
 
     /**
-     * Ajoute un item si le poids le permet.
+     * Tente d ajouter un item a l inventaire si le poids maximum n est pas depasse.
+     *
+     * @param item l item a ramasser
+     * @return true si l item a ete pris, false si trop lourd
      */
     public boolean takeItem(Item item)
     {
@@ -116,7 +151,10 @@ public class Player
     }
 
     /**
-     * Retire un item de l'inventaire.
+     * Retire un item de l inventaire et met a jour le poids courant.
+     *
+     * @param name le nom de l item a deposer
+     * @return l item depose, ou null s il n est pas dans l inventaire
      */
     public Item dropItem(String name)
     {
@@ -128,7 +166,9 @@ public class Player
     }
 
     /**
-     * Verifie si l'inventaire est vide.
+     * Verifie si l inventaire contient au moins un item.
+     *
+     * @return true si l inventaire est non vide, false sinon
      */
     public boolean hasItem()
     {
@@ -136,7 +176,10 @@ public class Player
     }
 
     /**
-     * Verifie si un item existe dans l'inventaire.
+     * Verifie si un item specifique est dans l inventaire.
+     *
+     * @param name le nom de l item a rechercher
+     * @return true si l item est present, false sinon
      */
     public boolean hasItem(String name)
     {
@@ -144,7 +187,9 @@ public class Player
     }
 
     /**
-     * Retourne l'inventaire sous forme de texte.
+     * Retourne l inventaire sous forme de texte lisible.
+     *
+     * @return une chaine listant les items et leur poids
      */
     public String getInventoryString()
     {
@@ -152,7 +197,9 @@ public class Player
     }
 
     /**
-     * Retourne le poids actuel.
+     * Retourne le poids total actuellement porte par le joueur.
+     *
+     * @return le poids courant en unites de charge
      */
     public int getTotalWeight()
     {
@@ -160,7 +207,9 @@ public class Player
     }
 
     /**
-     * Retourne le poids maximum.
+     * Retourne la capacite maximale de port du joueur.
+     *
+     * @return le poids maximum en unites de charge
      */
     public int getMaxWeight()
     {
@@ -168,7 +217,8 @@ public class Player
     }
 
     /**
-     * Double la capacite maximale.
+     * Double la capacite maximale du joueur.
+     * Utilise par l effet de l hostie sacree.
      */
     public void increaseMaxWeight()
     {
@@ -176,7 +226,9 @@ public class Player
     }
 
     /**
-     * Ajoute de la capacite au poids max.
+     * Augmente la capacite maximale du joueur d une valeur donnee.
+     *
+     * @param value le nombre d unites a ajouter au poids max
      */
     public void addMaxWeight(int value)
     {
@@ -184,7 +236,9 @@ public class Player
     }
 
     /**
-     * Reduit le poids max.
+     * Reduit la capacite maximale du joueur d une valeur donnee.
+     *
+     * @param value le nombre d unites a retirer du poids max
      */
     public void reduceMaxWeight(int value)
     {

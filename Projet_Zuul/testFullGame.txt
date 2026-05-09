@@ -1,48 +1,151 @@
 look
-
 take journal
-inventory
+inventaire
+
+go west
+take morceau1
+take voile
+use voile
+inventaire
 
 go west
 look
-take morceau1
+take herbes
+use herbes
 
+go east
 go east
 go south
-look
 take morceau3
+take habit
+use habit
+inventaire
 
-go east
+go west
 look
 take painbeni
-eat painbeni
+take pain
+use painbeni
 
 go north
 go north
 look
 take hostie
-eat hostie
+take bible
+take chapelet
+use hostie
+use chapelet
+inventaire
 
 go south
+go south
+go east
 go south
 go south
 look
 take elixir
-eat elixir
+take cleRouge
+use elixir
+inventaire
 
-go down
-look
-take cle rouillée
-
-go up
+go west
 go north
+go north
+go east
+go south
+look
+take livre
+inventaire
+
+go south
+go west
 go west
 look
-take herbes
-eat herbes
+take croix
+go east
+go north
+take bougie
+inventaire
 
-inventory
-
-back
-back
+go east
+go east
 look
+go north
+take document
+take clematri
+inventaire
+
+go south
+go south
+go west
+go south
+go south
+look
+go north
+look
+go south
+go south
+look
+take pioche
+inventaire
+
+go east
+go east
+go south
+go south
+go south
+go south
+go south
+go down
+go down
+look
+take clearchive
+take cle
+use cle
+use pioche
+look
+
+go north
+look
+take morceau2
+inventaire
+
+go south
+go south
+go south
+go east
+look
+take cleRouge
+go west
+go south
+look
+take encens
+take symbole
+go east
+look
+take amulette
+go west
+go south
+look
+take morceau4
+take beamer
+charge
+inventaire
+
+go west
+look
+go down
+go down
+go down
+look
+take clefinale
+take poison
+inventaire
+
+go south
+look
+go south
+look
+
+fire
+inventaire

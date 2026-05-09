@@ -4,3 +4,7 @@ go south
 look
 back
 help
+help
+go north
+go east
+look

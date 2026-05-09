@@ -32,9 +32,9 @@ public class Room
     public Room(final String pDescription, final String pImage)
     {
         this.aDescription = pDescription;
-        this.aImageName   = pImage;
-        this.aExits       = new HashMap<>();
-        this.aItems       = new ItemList();
+        this.aImageName = pImage;
+        this.aExits = new HashMap<>();
+        this.aItems = new ItemList();
     }
 
     /**
@@ -60,7 +60,9 @@ public class Room
     }
 
     /**
-     * Retourne la description de la piece.
+     * Retourne la courte description de la piece.
+     *
+     * @return la description de la piece
      */
     public String getDescription()
     {
@@ -69,6 +71,8 @@ public class Room
 
     /**
      * Retourne les sorties disponibles sous forme de texte.
+     *
+     * @return une chaine listant toutes les directions de sortie
      */
     public String getExitString()
     {
@@ -80,17 +84,20 @@ public class Room
     }
 
     /**
-     * Retourne une description complete de la piece.
+     * Retourne une description complete de la piece :
+     * position, sorties disponibles et items presents.
+     *
+     * @return la description longue de la piece
      */
     public String getLongDescription()
     {
-        return "Vous etes " + this.aDescription + ".\n"
-                + this.getExitString() + "\n"
-                + this.getItemString();
+        return "Vous etes " + this.aDescription + ".\n" + this.getExitString() + "\n" + this.getItemString();
     }
 
     /**
-     * Retourne le nom de l image associee.
+     * Retourne le nom du fichier image associe a la piece.
+     *
+     * @return le nom du fichier image (ex : "Hall.png")
      */
     public String getImageName()
     {
@@ -108,7 +115,9 @@ public class Room
     }
 
     /**
-     * Retourne la liste des items presents dans la piece.
+     * Retourne la liste des items presents dans la piece sous forme de texte.
+     *
+     * @return une chaine listant les items de la piece
      */
     public String getItemString()
     {
