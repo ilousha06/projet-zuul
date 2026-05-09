@@ -1,17 +1,17 @@
 import java.util.HashMap;
-import java.util.ArrayList;
 
 /**
- * La classe Room représente une pièce du jeu Zuul.
- * Une pièce possède :
+ * La classe Room represente une piece du jeu.
+ * Une piece possede :
  * - une description
- * - une image associée
- * - un ensemble de sorties vers d'autres pièces
- * - une liste d'items (plusieurs objets possibles)
+ * - une image associee
+ * - un ensemble de sorties vers d autres pieces
+ * - une liste d items
+ * - un ensemble de portes verrouillees avec leurs conditions
  */
 public class Room
 {
-    /** Description de la pièce */
+    /** Description de la piece */
     private final String aDescription;
 
     /** Collection des sorties */
@@ -20,22 +20,28 @@ public class Room
     /** Nom du fichier image */
     private final String aImageName;
 
-    /** Liste des items présents dans la pièce */
+    /** Liste des items presents dans la piece */
     private final ItemList aItems;
 
     /**
-     * Constructeur de la classe Room
+     * Constructeur de la classe Room.
+     *
+     * @param pDescription description de la piece
+     * @param pImage       nom du fichier image
      */
     public Room(final String pDescription, final String pImage)
     {
         this.aDescription = pDescription;
-        this.aImageName = pImage;
-        this.aExits = new HashMap<>();
-        this.aItems = new ItemList(); // initialisation de la liste des items
+        this.aImageName   = pImage;
+        this.aExits       = new HashMap<>();
+        this.aItems       = new ItemList();
     }
 
     /**
-     * Ajoute une sortie à la pièce
+     * Ajoute une sortie a la piece.
+     *
+     * @param pDirection la direction
+     * @param pNeighbor  la piece voisine
      */
     public void setExit(final String pDirection, final Room pNeighbor)
     {
@@ -43,7 +49,10 @@ public class Room
     }
 
     /**
-     * Retourne la pièce voisine dans une direction donnée
+     * Retourne la piece voisine dans une direction donnee.
+     *
+     * @param pDirection la direction
+     * @return la piece voisine ou null
      */
     public Room getExit(final String pDirection)
     {
@@ -51,7 +60,7 @@ public class Room
     }
 
     /**
-     * Retourne la description de la pièce
+     * Retourne la description de la piece.
      */
     public String getDescription()
     {
@@ -59,32 +68,29 @@ public class Room
     }
 
     /**
-     * Retourne les sorties disponibles
+     * Retourne les sorties disponibles sous forme de texte.
      */
     public String getExitString()
     {
         StringBuilder vExit = new StringBuilder("Exits:");
-
         for (String direction : this.aExits.keySet()) {
             vExit.append(" ").append(direction);
         }
-
         return vExit.toString();
     }
 
     /**
-     * Retourne une description complète :
-     * description + sorties + items
+     * Retourne une description complete de la piece.
      */
     public String getLongDescription()
     {
-        return "Vous êtes " + this.aDescription + ".\n"
+        return "Vous etes " + this.aDescription + ".\n"
                 + this.getExitString() + "\n"
                 + this.getItemString();
     }
 
     /**
-     * Retourne le nom de l’image associée
+     * Retourne le nom de l image associee.
      */
     public String getImageName()
     {
@@ -92,15 +98,17 @@ public class Room
     }
 
     /**
-     * Ajoute un item dans la pièce
+     * Ajoute un item dans la piece.
+     *
+     * @param item l item a ajouter
      */
     public void addItem(Item item)
     {
-        this.aItems.addItem(item); // ajoute unobjet dans la salle
+        this.aItems.addItem(item);
     }
 
     /**
-     * Retourne la liste des items présents dans la pièce
+     * Retourne la liste des items presents dans la piece.
      */
     public String getItemString()
     {
@@ -108,7 +116,10 @@ public class Room
     }
 
     /**
-     * Recherche un item par son nom dans la pièce
+     * Recherche un item par son nom dans la piece.
+     *
+     * @param name le nom de l item
+     * @return l item ou null
      */
     public Item getItem(String name)
     {
@@ -116,9 +127,9 @@ public class Room
     }
 
     /**
-     * Supprime un item de la salle
+     * Supprime un item de la piece.
      *
-     * @param item l'item à supprimer
+     * @param item l item a supprimer
      */
     public void removeItem(Item item)
     {
@@ -126,9 +137,9 @@ public class Room
     }
 
     /**
-     * Vérifie si une salle fait partie des sorties.
+     * Verifie si une salle fait partie des sorties.
      *
-     * @param pRoom salle à vérifier
+     * @param pRoom la salle a verifier
      * @return true si la salle est une sortie
      */
     public boolean isExit(Room pRoom)

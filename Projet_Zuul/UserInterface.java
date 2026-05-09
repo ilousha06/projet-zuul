@@ -25,7 +25,7 @@ public class UserInterface implements ActionListener
 
     // Barre de suspicion
     private JProgressBar suspicionBar;
-    
+
     // La boussole circulaire gere N/S/E/W/back en interne
     private CompassPanel compass;
 
@@ -35,6 +35,7 @@ public class UserInterface implements ActionListener
     // Boutons d'actions
     private ImageButton helpButton, lookButton, takeButton;
     private ImageButton dropButton, inventaireButton, quitButton;
+    private ImageButton chargeButton, fireButton, useButton;
 
     // Couleurs de l'interface
     static final Color BG       = new Color(10,  9,  8);
@@ -120,7 +121,7 @@ public class UserInterface implements ActionListener
 
         JPanel outer = new JPanel(new BorderLayout());
         outer.setBackground(BG);
-        outer.setPreferredSize(new Dimension(210, 0));
+        outer.setPreferredSize(new Dimension(280, 0));
         outer.setBorder(new CompoundBorder(
                 new OrnateBorder(GOLD, GOLD_DIM, 2, 8),
                 BorderFactory.createEmptyBorder(16, 14, 16, 14)));
@@ -131,28 +132,32 @@ public class UserInterface implements ActionListener
 
     /**
      * Cree le panneau d'actions a droite.
-     * Contient 6 boutons : help, look, take, drop, inv, quit.
+     * Contient 9 boutons : help, look, take, drop, inv, quit, charge, fire, use.
      *
      * @return le panneau configure
      */
     private JPanel buildActionPanel()
     {
-        helpButton       = new ImageButton("images/buttons/help.png",       "help");
-        lookButton       = new ImageButton("images/buttons/look.png",       "look");
-        takeButton       = new ImageButton("images/buttons/take.png",       "take");
-        dropButton       = new ImageButton("images/buttons/drop.png",       "drop");
-        inventaireButton = new ImageButton("images/buttons/inventaire.png", "inventaire");
-        quitButton       = new ImageButton("images/buttons/quit.png",       "quit");
+        helpButton = new ImageButton("images/buttons/help.png","help");
+        lookButton = new ImageButton("images/buttons/look.png","look");
+        takeButton = new ImageButton("images/buttons/take.png","take");
+        dropButton = new ImageButton("images/buttons/drop.png","drop");
+        inventaireButton = new ImageButton("images/buttons/inventaire.png","inventaire");
+        quitButton = new ImageButton("images/buttons/quit.png","quit");
+        chargeButton = new ImageButton("images/buttons/charge.png","charge");
+        fireButton = new ImageButton("images/buttons/fire.png","fire");
+        useButton = new ImageButton("images/buttons/use.png","use");
 
-        JPanel grid = new JPanel(new GridLayout(3, 2, 8, 8));
+        // Grille 3x3 pour les 9 boutons
+        JPanel grid = new JPanel(new GridLayout(3, 3, 8, 8));
         grid.setOpaque(false);
-        grid.add(helpButton);       grid.add(lookButton);
-        grid.add(takeButton);       grid.add(dropButton);
-        grid.add(inventaireButton); grid.add(quitButton);
+        grid.add(helpButton);grid.add(lookButton);grid.add(inventaireButton);
+        grid.add(takeButton);grid.add(dropButton);grid.add(useButton);
+        grid.add(chargeButton);grid.add(fireButton);grid.add(quitButton);
 
         JPanel outer = new JPanel(new BorderLayout());
         outer.setBackground(BG);
-        outer.setPreferredSize(new Dimension(200, 0));
+        outer.setPreferredSize(new Dimension(280, 0));
         outer.setBorder(new CompoundBorder(
                 new OrnateBorder(GOLD, GOLD_DIM, 2, 8),
                 BorderFactory.createEmptyBorder(16, 12, 16, 12)));
@@ -235,7 +240,7 @@ public class UserInterface implements ActionListener
      *
      * @param value valeur entre 0 et 100
      */
-    public void setSuspicion(int value)
+    public void setSuspicion(final int value)
     {
         suspicionBar.setValue(value);
         suspicionBar.setString(value + "%");
@@ -289,10 +294,12 @@ public class UserInterface implements ActionListener
             else                    engine.interpretCommand("go " + dir);
         });
 
-        upButton.addActionListener(this);         downButton.addActionListener(this);
-        helpButton.addActionListener(this);       lookButton.addActionListener(this);
-        takeButton.addActionListener(this);       dropButton.addActionListener(this);
+        upButton.addActionListener(this);downButton.addActionListener(this);
+        helpButton.addActionListener(this);lookButton.addActionListener(this);
+        takeButton.addActionListener(this);dropButton.addActionListener(this);
         inventaireButton.addActionListener(this); quitButton.addActionListener(this);
+        chargeButton.addActionListener(this);fireButton.addActionListener(this);
+        useButton.addActionListener(this);
     }
 
     /**
@@ -300,7 +307,7 @@ public class UserInterface implements ActionListener
      *
      * @param pText le texte a afficher
      */
-    public void println(String pText)
+    public void println(final String pText)
     {
         log.append(pText + "\n");
         log.setCaretPosition(log.getDocument().getLength());
@@ -312,7 +319,7 @@ public class UserInterface implements ActionListener
      *
      * @param pImageName le nom du fichier image dans le dossier "images/"
      */
-    public void showImage(String pImageName)
+    public void showImage(final String pImageName)
     {
         ImageIcon icon = new ImageIcon("images/" + pImageName);
         int maxW = (frame != null ? frame.getWidth() - 410 : 1200);
@@ -329,7 +336,7 @@ public class UserInterface implements ActionListener
      *
      * @param pOn true pour activer, false pour desactiver
      */
-    public void enable(boolean pOn) { entryField.setEditable(pOn); }
+    public void enable(final boolean pOn) { entryField.setEditable(pOn); }
 
     /**
      * Efface tout le contenu du journal de texte.
@@ -343,15 +350,23 @@ public class UserInterface implements ActionListener
      * @param e l'evenement declanche
      */
     @Override
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
         Object src = e.getSource();
-        if      (src == helpButton)       engine.interpretCommand("help");
-        else if (src == lookButton)       engine.interpretCommand("look");
-        else if (src == quitButton)       engine.interpretCommand("quit");
-        else if (src == upButton)         engine.interpretCommand("go up");
-        else if (src == downButton)       engine.interpretCommand("go down");
+        if      (src == helpButton) engine.interpretCommand("help");
+        else if (src == lookButton) engine.interpretCommand("look");
+        else if (src == quitButton) engine.interpretCommand("quit");
+        else if (src == upButton) engine.interpretCommand("go up");
+        else if (src == downButton) engine.interpretCommand("go down");
         else if (src == inventaireButton) engine.interpretCommand("inventaire");
+        else if (src == chargeButton) engine.interpretCommand("charge");
+        else if (src == fireButton) engine.interpretCommand("fire");
+        else if (src == useButton) {
+            String item = entryField.getText().trim();
+            entryField.setText("");
+            if (item.isEmpty()) { println("Entrez un objet a utiliser."); return; }
+            engine.interpretCommand("eat " + item);
+        }
         else if (src == takeButton) {
             String item = entryField.getText().trim();
             entryField.setText("");
@@ -365,7 +380,6 @@ public class UserInterface implements ActionListener
             engine.interpretCommand("drop " + item);
         }
         else {
-            // Commande tapee a la main dans le champ de saisie
             String input = entryField.getText().trim();
             entryField.setText("");
             if (!input.isEmpty()) engine.interpretCommand(input);
@@ -382,12 +396,12 @@ public class UserInterface implements ActionListener
         private final int   lineThickness, gap;
 
         /**
-         * @param outerColor    couleur de la ligne exterieure
-         * @param innerColor    couleur de la ligne interieure
+         * @param outerColor couleur de la ligne exterieure
+         * @param innerColor couleur de la ligne interieure
          * @param lineThickness epaisseur de la ligne exterieure
-         * @param gap           espace entre les deux lignes
+         * @param gap espace entre les deux lignes
          */
-        OrnateBorder(Color outerColor, Color innerColor, int lineThickness, int gap)
+        OrnateBorder(final Color outerColor, final Color innerColor, final int lineThickness, final int gap)
         {
             this.outerColor = outerColor; this.innerColor = innerColor;
             this.lineThickness = lineThickness; this.gap = gap;
@@ -401,7 +415,7 @@ public class UserInterface implements ActionListener
         }
 
         @Override
-        public void paintBorder(Component c, Graphics g, int x, int y, int w, int h)
+        public void paintBorder(final Component c, final Graphics g, final int x, final int y, final int w, final int h)
         {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -449,14 +463,10 @@ public class UserInterface implements ActionListener
 
         // Les 4 directions et leurs angles sur le cercle
         private static final String[] DIRECTIONS = { "north", "east", "south", "west" };
-        private static final double[] ANGLES      = { -90.0,   0.0,   90.0,   180.0  };
+        private static final double[] ANGLES = { -90.0,   0.0,   90.0,   180.0  };
 
         // Chemins des 5 images (4 directions + back au centre)
-        private static final String[] CHEMINS = {
-                "images/buttons/north.png", "images/buttons/east.png",
-                "images/buttons/south.png", "images/buttons/west.png",
-                "images/buttons/back.png"
-        };
+        private static final String[] CHEMINS = {"images/buttons/north.png", "images/buttons/east.png", "images/buttons/south.png", "images/buttons/west.png", "images/buttons/back.png"};
 
         private final ImageIcon[] imagesNormales = new ImageIcon[5];
 
@@ -526,7 +536,7 @@ public class UserInterface implements ActionListener
          * @param g le contexte graphique
          */
         @Override
-        protected void paintComponent(Graphics g)
+        protected void paintComponent(final Graphics g)
         {
             Graphics2D g2 = (Graphics2D) g.create();
 
@@ -564,12 +574,12 @@ public class UserInterface implements ActionListener
          * Dessine une image centree sur un point.
          * Ajoute un cercle dore autour si le bouton est survole.
          *
-         * @param g2    le contexte graphique
+         * @param g2 le contexte graphique
          * @param index index de l'image (0=nord 1=est 2=sud 3=ouest 4=back)
-         * @param cx    coordonnee X du centre
-         * @param cy    coordonnee Y du centre
+         * @param cx coordonnee X du centre
+         * @param cy coordonnee Y du centre
          */
-        private void dessinerImage(Graphics2D g2, int index, int cx, int cy)
+        private void dessinerImage(final Graphics2D g2, final int index, final int cx, final int cy)
         {
             // Verifie si cette direction est survolee par la souris
             String dir = (index < DIRECTIONS.length) ? DIRECTIONS[index] : "back";
@@ -598,7 +608,7 @@ public class UserInterface implements ActionListener
          * @param my position Y de la souris
          * @return "north", "south", "east", "west", "back" ou null
          */
-        private String trouverZone(int mx, int my)
+        private String trouverZone(final int mx, final int my)
         {
             int cx = getWidth()/2, cy = getHeight()/2;
             int R  = Math.min(cx, cy) - 5;
@@ -622,7 +632,7 @@ public class UserInterface implements ActionListener
          * @param label texte a afficher dans le cercle
          * @return l'image de remplacement
          */
-        private static ImageIcon creerPlaceholder(String label)
+        private static ImageIcon creerPlaceholder(final String label)
         {
             int t = 40;
             BufferedImage buf = new BufferedImage(t, t, BufferedImage.TYPE_INT_ARGB);
@@ -651,7 +661,7 @@ public class UserInterface implements ActionListener
 
         /**
          * @param imagePath chemin vers l'image PNG du bouton
-         * @param command   commande envoyee au jeu lors du clic
+         * @param command commande envoyee au jeu lors du clic
          */
         ImageButton(String imagePath, String command)
         {
@@ -685,7 +695,7 @@ public class UserInterface implements ActionListener
          * @param label texte a afficher dans le carre
          * @return l'icone de remplacement
          */
-        private static ImageIcon buildPlaceholder(String label)
+        private static ImageIcon buildPlaceholder(final String label)
         {
             int s = 64;
             BufferedImage img = new BufferedImage(s, s, BufferedImage.TYPE_INT_ARGB);
@@ -710,13 +720,10 @@ public class UserInterface implements ActionListener
          *
          * @param l l'ecouteur a ajouter
          */
-        public void addActionListener(ActionListener l)    { listeners.add(l); }
+        public void addActionListener(final ActionListener l)
+        {
+            listeners.add(l);
+        }
 
-        /**
-         * Retire un ecouteur de clic de ce bouton.
-         *
-         * @param l l'ecouteur a retirer
-         */
-        public void removeActionListener(ActionListener l) { listeners.remove(l); }
     }
 }
