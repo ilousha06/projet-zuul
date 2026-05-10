@@ -20,6 +20,9 @@ public class GameModel
     private Room vSanctuaireIntern;
     private Room vArchiInterd;
 
+    /** Salle de teleportation (accessible pour la commande alea) */
+    private TransporterRoom vPortailOcculte;
+
     /**
      * Constructeur du modele.
      * Initialise le joueur et les salles du jeu.
@@ -56,7 +59,7 @@ public class GameModel
         Room vChambreReliques = new Room("dans la chambre des reliques", "reliques.png");
 
         // Salle de teleportation : accessible depuis le labyrinthe
-        TransporterRoom vPortailOcculte = new TransporterRoom("dans une clairiere etrange au coeur du labyrinthe - quelque chose ne va pas ici", "portail.png");
+        this.vPortailOcculte = new TransporterRoom("dans une clairiere etrange au coeur du labyrinthe - quelque chose ne va pas ici", "portail.png");
 
         // Salles gardees en references pour pouvoir les modifier
         this.vEscalierCave = new Room("dans l escalier menant a la cave", "escalier.png");
@@ -98,7 +101,7 @@ public class GameModel
 
         vLabyrintheVeg.setExit("east", vJardinCentral);
         vLabyrintheVeg.setExit("west", vCabaneJardin);
-        vLabyrintheVeg.setExit("south", vPortailOcculte);
+        vLabyrintheVeg.setExit("south", this.vPortailOcculte);
         vCabaneJardin.setExit("east", vLabyrintheVeg);
 
         vAutelExtern.setExit("west", vJardinCentral);
@@ -242,7 +245,7 @@ public class GameModel
             this.vSalleCachee, this.vCrypteAncienne, this.vSanctuaireIntern,
             this.vArchiInterd
         };
-        vPortailOcculte.setTargetRooms(vTargetRooms);
+        this.vPortailOcculte.setTargetRooms(vTargetRooms);
 
         // Depart du joueur
         this.aPlayer.setCurrentRoom(vDortoirEast);
@@ -343,5 +346,16 @@ public class GameModel
     public Beamer getBeamer()
     {
         return this.beamer;
+    }
+
+    /**
+     * Retourne la salle de teleportation.
+     * Utilisee par la commande alea pour forcer une destination en mode test.
+     *
+     * @return la TransporterRoom du jeu
+     */
+    public TransporterRoom getTransporterRoom()
+    {
+        return this.vPortailOcculte;
     }
 }

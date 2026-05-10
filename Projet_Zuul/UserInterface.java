@@ -322,7 +322,7 @@ public class UserInterface implements ActionListener
     public void showImage(final String pImageName)
     {
         ImageIcon icon = new ImageIcon("images/" + pImageName);
-        int maxW = (frame != null ? frame.getWidth() - 410 : 1200);
+        int maxW = (frame != null ? frame.getWidth() : 1600);
         int maxH = 480;
         int w = icon.getIconWidth(), h = icon.getIconHeight();
         if (w <= 0 || h <= 0) { image.setIcon(icon); return; }

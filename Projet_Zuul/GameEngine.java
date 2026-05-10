@@ -25,6 +25,9 @@ public class GameEngine
     /** Indique si la map est actuellement affichee a la place de l image de salle */
     private boolean mapAffichee = false;
 
+    /** Indique si le jeu est en mode test (execution d un fichier de commandes) */
+    private boolean modeTest = false;
+
     /** Interface musicale */
     private final SoundManager sound;
 
@@ -78,6 +81,7 @@ public class GameEngine
             case "charge" -> this.charge();
             case "fire" -> this.fire();
             case "use" -> this.use(pCommand);
+            case "alea" -> this.alea(pCommand);
             default -> gui.println("Command not implemented.");
         }
     }
@@ -288,21 +292,9 @@ public class GameEngine
             }
         }
 
-        // Teleportation si le joueur est dans la TransporterRoom
-        if (model.getCurrentRoom() instanceof TransporterRoom) {
-            TransporterRoom vPortail = (TransporterRoom) model.getCurrentRoom();
-            Room vDestination = vPortail.getRandomRoom();
-            model.getPlayer().setCurrentRoom(vDestination);
-            gui.clear();
-            mapAffichee = false;
-            gui.println("Un tourbillon de lumiere vous engloutit...");
-            gui.println("Vous vous reveillez dans un endroit inconnu.");
-            gui.println("");
-            printLocationInfo();
-            return;
-        }
-
-        // Deplacement normal
+        // Deplacement normal (si la salle est une TransporterRoom,
+        // getExit() est redefinie par polymorphisme et retourne une salle aleatoire)
+        boolean etaitTransporter = model.getCurrentRoom() instanceof TransporterRoom;
         Room oldRoom = model.getCurrentRoom();
         model.goRoom(direction);
 
@@ -314,6 +306,13 @@ public class GameEngine
 
         gui.clear();
         mapAffichee = false;
+
+        if (etaitTransporter) {
+            gui.println("Un tourbillon de lumiere vous engloutit...");
+            gui.println("Vous vous reveillez dans un endroit inconnu.");
+            gui.println("");
+        }
+
         printLocationInfo();
 
         // Messages de suspicion
@@ -446,6 +445,7 @@ public class GameEngine
             gui.println("File not found.");
             return;
         }
+        modeTest = true;
         Scanner scanner = new Scanner(input);
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
@@ -457,6 +457,7 @@ public class GameEngine
             interpretCommand(line);
         }
         scanner.close();
+        modeTest = false;
     }
 
     /**
@@ -604,6 +605,28 @@ public class GameEngine
                 gui.println("Cet objet ne peut pas etre utilise.");
                 model.getPlayer().takeItem(item);
             }
+        }
+    }
+
+    /**
+     * Commande alea : force la destination de la TransporterRoom en mode test.
+     * - alea <nom> : memorise le nom de la salle cible (ex : alea cuisine)
+     * - alea       : vide la destination forcee, retour au comportement aleatoire
+     * Cette commande ne fonctionne qu en mode test (execution d un fichier).
+     *
+     * @param pCommand la commande contenant le nom de salle optionnel
+     */
+    private void alea(Command pCommand)
+    {
+        TransporterRoom portail = model.getTransporterRoom();
+        if (portail == null) return;
+
+        if (pCommand.hasSecondWord()) {
+            portail.setAleaString(pCommand.getSecondWord());
+            gui.println("Destination forcee : " + pCommand.getSecondWord());
+        } else {
+            portail.setAleaString(null);
+            gui.println("Teleportation redevenue aleatoire.");
         }
     }
 
