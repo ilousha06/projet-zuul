@@ -35,87 +35,91 @@ public class GameModel
      */
     private void createRooms()
     {
-        Room vDortoirEast       = new Room("dans le dortoir east reserve aux soeurs",   "Dortoire_East.png");
-        Room vDortoirOuest      = new Room("dans le dortoir ouest plus silencieux",      "Dortoire_Ouest.png");
-        Room vRefectoire        = new Room("dans le refectoire commun",                  "refectoire.png");
-        Room vCuisine           = new Room("dans la cuisine ou les repas sont prepares", "Cuisine.png");
-        Room vInfirmerie        = new Room("dans l infirmerie aux lumieres froides",     "Infirmerie.png");
-        Room vHallCeremonies    = new Room("dans le hall des ceremonies",                "Hall.png");
-        Room vCourIntern        = new Room("dans la cour interieure entouree de murs",   "Cour.png");
-        Room vJardinCentral     = new Room("dans le jardin central sombre",              "Jardin.png");
-        Room vPuitsAncien       = new Room("pres du puits ancien en pierre",             "Puits.png");
-        Room vSerreCultivee     = new Room("dans la serre cultivee abandonnee",          "serre.png");
-        Room vLabyrintheVeg     = new Room("dans le labyrinthe vegetal inquietant",      "Labyrinthe.png");
-        Room vAutelExtern       = new Room("pres de l autel exterieur en pierre",        "autel.png");
-        Room vCabaneJardin      = new Room("dans la cabane du jardinier",                "Cabane.png");
-        Room vChapPrinci        = new Room("dans la chapelle principale silencieuse",    "Chapelle.png");
-        Room vSalleSerments     = new Room("dans la salle des serments",                 "serment.png");
-        Room vBureauMatriarche  = new Room("dans le bureau de la matriarche",            "bureau.png");
-        Room vAntichambreSacree = new Room("dans l antichambre sacree",                  "antichambre.png");
-        Room vSalleRituels      = new Room("dans la salle des rituels",                  "rituels.png");
-        Room vChambreReliques   = new Room("dans la chambre des reliques",               "reliques.png");
+        Room vDortoirEast = new Room("dans le dortoir east reserve aux soeurs", "Dortoire_East.png");
+        Room vDortoirOuest = new Room("dans le dortoir ouest plus silencieux", "Dortoire_Ouest.png");
+        Room vRefectoire = new Room("dans le refectoire commun", "refectoire.png");
+        Room vCuisine = new Room("dans la cuisine ou les repas sont prepares", "Cuisine.png");
+        Room vInfirmerie = new Room("dans l infirmerie aux lumieres froides", "Infirmerie.png");
+        Room vHallCeremonies = new Room("dans le hall des ceremonies", "Hall.png");
+        Room vCourIntern = new Room("dans la cour interieure entouree de murs", "Cour.png");
+        Room vJardinCentral = new Room("dans le jardin central sombre", "Jardin.png");
+        Room vPuitsAncien = new Room("pres du puits ancien en pierre", "Puits.png");
+        Room vSerreCultivee = new Room("dans la serre cultivee abandonnee", "serre.png");
+        Room vLabyrintheVeg = new Room("dans le labyrinthe vegetal inquietant", "Labyrinthe.png");
+        Room vAutelExtern = new Room("pres de l autel exterieur en pierre", "autel.png");
+        Room vCabaneJardin = new Room("dans la cabane du jardinier", "Cabane.png");
+        Room vChapPrinci = new Room("dans la chapelle principale silencieuse", "Chapelle.png");
+        Room vSalleSerments = new Room("dans la salle des serments", "serment.png");
+        Room vBureauMatriarche = new Room("dans le bureau de la matriarche", "bureau.png");
+        Room vAntichambreSacree = new Room("dans l antichambre sacree", "antichambre.png");
+        Room vSalleRituels = new Room("dans la salle des rituels", "rituels.png");
+        Room vChambreReliques = new Room("dans la chambre des reliques", "reliques.png");
+
+        // Salle de teleportation : accessible depuis le labyrinthe
+        TransporterRoom vPortailOcculte = new TransporterRoom("dans une clairiere etrange au coeur du labyrinthe - quelque chose ne va pas ici", "portail.png");
 
         // Salles gardees en references pour pouvoir les modifier
-        this.vEscalierCave      = new Room("dans l escalier menant a la cave",           "escalier.png");
-        this.vCavePrincipale    = new Room("dans la cave principale",                    "cave.png");
-        this.vPorteScellee      = new Room("devant la porte scellee",                    "porte.png");
-        this.vSortieExtern      = new Room("devant la sortie exterieure",                "sortie.png");
-        this.vCloitreIntern     = new Room("dans le cloitre interieur",                  "cloitre.png");
-        this.vBiblioSacree      = new Room("dans la bibliotheque sacree",                "Bibliotheque.png");
-        this.vSalleCachee      = new Room("dans une salle cachee sous le puits",  "salle.png");
-        this.vCrypteAncienne   = new Room("dans la crypte ancienne",              "crypte.png");
-        this.vSanctuaireIntern = new Room("dans le sanctuaire interieur",         "sanctuaire.png");
-        this.vArchiInterd      = new Room("dans les archives interdites",          "Archives.png");
+        this.vEscalierCave = new Room("dans l escalier menant a la cave", "escalier.png");
+        this.vCavePrincipale = new Room("dans la cave principale", "cave.png");
+        this.vPorteScellee = new Room("devant la porte scellee", "porte.png");
+        this.vSortieExtern = new Room("devant la sortie exterieure", "sortie.png");
+        this.vCloitreIntern = new Room("dans le cloitre interieur", "cloitre.png");
+        this.vBiblioSacree = new Room("dans la bibliotheque sacree", "Bibliotheque.png");
+        this.vSalleCachee = new Room("dans une salle cachee sous le puits", "salle.png");
+        this.vCrypteAncienne = new Room("dans la crypte ancienne", "crypte.png");
+        this.vSanctuaireIntern = new Room("dans le sanctuaire interieur", "sanctuaire.png");
+        this.vArchiInterd = new Room("dans les archives interdites", "Archives.png");
 
         // Connexions
         vCourIntern.setExit("north", vDortoirOuest);
         vCourIntern.setExit("south", vJardinCentral);
-        vCourIntern.setExit("east",  vHallCeremonies);
-        vCourIntern.setExit("west",  vRefectoire);
+        vCourIntern.setExit("east", vHallCeremonies);
+        vCourIntern.setExit("west", vRefectoire);
 
-        vDortoirEast.setExit("west",   vDortoirOuest);
+        vDortoirEast.setExit("west", vDortoirOuest);
         vDortoirOuest.setExit("south", vCourIntern);
-        vDortoirOuest.setExit("west",  vInfirmerie);
-        vDortoirOuest.setExit("east",  vDortoirEast);
+        vDortoirOuest.setExit("west", vInfirmerie);
+        vDortoirOuest.setExit("east", vDortoirEast);
 
         vInfirmerie.setExit("east", vDortoirOuest);
 
-        vRefectoire.setExit("east",  vCourIntern);
+        vRefectoire.setExit("east", vCourIntern);
         vRefectoire.setExit("north", vCuisine);
         vCuisine.setExit("south", vRefectoire);
 
         vJardinCentral.setExit("north", vCourIntern);
         vJardinCentral.setExit("south", vPuitsAncien);
-        vJardinCentral.setExit("east",  vAutelExtern);
-        vJardinCentral.setExit("west",  vLabyrintheVeg);
+        vJardinCentral.setExit("east", vAutelExtern);
+        vJardinCentral.setExit("west", vLabyrintheVeg);
 
         // Trap door : descente uniquement, pas de remontee
         vPuitsAncien.setExit("north", vJardinCentral);
-        vPuitsAncien.setExit("down",  vSalleCachee);
+        vPuitsAncien.setExit("down", vSalleCachee);
 
         vLabyrintheVeg.setExit("east", vJardinCentral);
         vLabyrintheVeg.setExit("west", vCabaneJardin);
-        vCabaneJardin.setExit("east",  vLabyrintheVeg);
+        vLabyrintheVeg.setExit("south", vPortailOcculte);
+        vCabaneJardin.setExit("east", vLabyrintheVeg);
 
-        vAutelExtern.setExit("west",   vJardinCentral);
-        vAutelExtern.setExit("south",  vSerreCultivee);
+        vAutelExtern.setExit("west", vJardinCentral);
+        vAutelExtern.setExit("south", vSerreCultivee);
         vSerreCultivee.setExit("north", vAutelExtern);
 
-        vHallCeremonies.setExit("west",  vCourIntern);
+        vHallCeremonies.setExit("west", vCourIntern);
         vHallCeremonies.setExit("north", vSalleSerments);
         vHallCeremonies.setExit("south", vCloitreIntern);
 
         vSalleSerments.setExit("south", vHallCeremonies);
-        vSalleSerments.setExit("east",  vAntichambreSacree);
+        vSalleSerments.setExit("east", vAntichambreSacree);
 
-        vAntichambreSacree.setExit("west",  vSalleSerments);
+        vAntichambreSacree.setExit("west", vSalleSerments);
         vAntichambreSacree.setExit("south", vBureauMatriarche);
-        vBureauMatriarche.setExit("north",  vAntichambreSacree);
+        vBureauMatriarche.setExit("north", vAntichambreSacree);
 
         // Cloitre : sortie south vers sanctuaire verrouillee (ajoutee apres avec clematri)
         vCloitreIntern.setExit("north", vHallCeremonies);
-        vCloitreIntern.setExit("east",  vBiblioSacree);
-        vCloitreIntern.setExit("west",  vChapPrinci);
+        vCloitreIntern.setExit("east", vBiblioSacree);
+        vCloitreIntern.setExit("west", vChapPrinci);
         vChapPrinci.setExit("east", vCloitreIntern);
 
         // Bibliotheque : sortie north vers archives verrouillee (ajoutee apres avec livre + clearchive)
@@ -123,11 +127,11 @@ public class GameModel
 
         this.vSanctuaireIntern.setExit("north", vCloitreIntern);
         this.vSanctuaireIntern.setExit("south", vCrypteAncienne);
-        this.vSanctuaireIntern.setExit("east",  vSalleRituels);
+        this.vSanctuaireIntern.setExit("east", vSalleRituels);
         vSalleRituels.setExit("west", vSanctuaireIntern);
 
         this.vCrypteAncienne.setExit("north", vSanctuaireIntern);
-        this.vCrypteAncienne.setExit("east",  vChambreReliques);
+        this.vCrypteAncienne.setExit("east", vChambreReliques);
         this.vCrypteAncienne.setExit("south", vEscalierCave);
         vChambreReliques.setExit("west", vCrypteAncienne);
 
@@ -139,7 +143,7 @@ public class GameModel
         // Escalier vers cave verrouillee (ouverte apres code + clerouge + encens)
         this.vEscalierCave.setExit("north", vCrypteAncienne);
 
-        vCavePrincipale.setExit("up",    vEscalierCave);
+        vCavePrincipale.setExit("up", vEscalierCave);
         vCavePrincipale.setExit("south", vPorteScellee);
 
         // Porte scellee verrouillee (ouverte apres clefinale)
@@ -148,27 +152,27 @@ public class GameModel
         vSortieExtern.setExit("north", vPorteScellee);
 
         // Items classiques
-        Item journal    = new Item("journal",    "un journal d une ancienne novice - elle parle d une salle interdite sous le puits", 1);
-        Item pain       = new Item("pain",       "un pain au gout etrange",                                                           1);
-        Item livre      = new Item("livre",      "un livre interdit sur les rituels - sert d autorisation pour les archives",         2);
-        Item cle        = new Item("cle",        "une cle rouilee - pour un coffre quelque part",                                     1);
-        Item document   = new Item("document",   "un document secret avec des noms de femmes disparues - la preuve que vous cherchez", 1);
-        Item bougie     = new Item("bougie",     "une bougie noire - la flamme revele ce que les yeux refusent de voir",              1);
-        Item symbole    = new Item("symbole",    "un symbole grave etrange - vous reconnaissez des visages graves dedans",            1);
-        Item amulette   = new Item("amulette",   "une amulette ancienne qui pulse d une energie etrange",                             2);
-        Item cleFinale  = new Item("clefinale",  "une cle ancienne massive - pour la porte scellee",                                  2);
-        Item outil      = new Item("outil",      "un outil casse - inutilisable",                                                     2);
-        Item cleRouge   = new Item("clerouge",   "une cle rouge etrange - pour la serrure de l escalier",                            1);
-        Item papier1    = new Item("morceau1",   "un morceau de papier avec le chiffre 3",                                            1);
-        Item papier2    = new Item("morceau2",   "un morceau de papier avec le chiffre 7",                                            1);
-        Item papier3    = new Item("morceau3",   "un morceau de papier avec le chiffre 1",                                            1);
-        Item papier4    = new Item("morceau4",   "un morceau de papier avec le chiffre 9",                                            1);
-        Item seringue   = new Item("seringue",   "une seringue contenant un liquide inconnu - quelque chose ne va pas ici",           1);
-        Item bible      = new Item("bible",      "une vieille bible usee",                                                            2);
-        Item croix      = new Item("croix",      "une croix en bois sombre",                                                          1);
-        Item pioche     = new Item("pioche",     "une pioche solide qui a servi recemment - pour casser les murs",                    3);
-        Item clematri   = new Item("clematri",   "la cle doree de la Matriarche - ouvre le passage vers le sanctuaire",              1);
-        Item clearchive = new Item("clearchive", "une petite cle pour les archives interdites",                                       1);
+        Item journal = new Item("journal", "un journal d une ancienne novice - elle parle d une salle interdite sous le puits", 1);
+        Item pain = new Item("pain", "un pain au gout etrange", 1);
+        Item livre = new Item("livre", "un livre interdit sur les rituels - sert d autorisation pour les archives", 2);
+        Item cle = new Item("cle", "une cle rouilee - pour un coffre quelque part", 1);
+        Item document = new Item("document", "un document secret avec des noms de femmes disparues - la preuve que vous cherchez", 1);
+        Item bougie = new Item("bougie", "une bougie noire - la flamme revele ce que les yeux refusent de voir", 1);
+        Item symbole = new Item("symbole", "un symbole grave etrange - vous reconnaissez des visages graves dedans", 1);
+        Item amulette = new Item("amulette", "une amulette ancienne qui pulse d une energie etrange", 2);
+        Item cleFinale = new Item("clefinale", "une cle ancienne massive - pour la porte scellee", 2);
+        Item outil = new Item("outil", "un outil metallique solide - peut forcer certaines grilles", 2);
+        Item cleRouge = new Item("clerouge", "une cle rouge etrange - pour la serrure de l escalier", 1);
+        Item papier1 = new Item("morceau1", "un morceau de papier avec le chiffre 3", 1);
+        Item papier2 = new Item("morceau2", "un morceau de papier avec le chiffre 7", 1);
+        Item papier3 = new Item("morceau3", "un morceau de papier avec le chiffre 1", 1);
+        Item papier4 = new Item("morceau4", "un morceau de papier avec le chiffre 9", 1);
+        Item seringue = new Item("seringue", "une seringue contenant un liquide inconnu - quelque chose ne va pas ici", 1);
+        Item bible = new Item("bible", "une vieille bible usee", 2);
+        Item croix = new Item("croix", "une croix en bois sombre", 1);
+        Item pioche = new Item("pioche", "une pioche solide qui a servi recemment - pour casser les murs", 3);
+        Item clematri = new Item("clematri", "la cle doree de la Matriarche - ouvre le passage vers le sanctuaire", 1);
+        Item clearchive = new Item("clearchive", "une petite cle pour les archives interdites", 1);
 
         // Placement des items classiques
         vDortoirEast.addItem(journal);
@@ -182,7 +186,7 @@ public class GameModel
         vSanctuaireIntern.addItem(symbole);
         vCrypteAncienne.addItem(amulette);
         vCavePrincipale.addItem(cleFinale);
-        vCabaneJardin.addItem(outil);
+        vSalleSerments.addItem(outil);
         vCabaneJardin.addItem(pioche);
         vSalleRituels.addItem(cleRouge);
         vDortoirOuest.addItem(papier1);
@@ -194,14 +198,14 @@ public class GameModel
         vCloitreIntern.addItem(croix);
 
         // Items speciaux
-        Item hostie   = new Item("hostie",   "une hostie sacree mysterieuse - double votre force",         1);
-        Item elixir   = new Item("elixir",   "un elixir noir puissant - augmente votre capacite",          2);
-        Item herbes   = new Item("herbes",   "des herbes medicinales - apaisent l esprit",                  1);
-        Item painBeni = new Item("painbeni", "un pain beni - apporte du reconfort",                         1);
-        Item encens   = new Item("encens",   "un encens mystique - active les mecanismes anciens",          1);
-        Item poison   = new Item("poison",   "un liquide toxique dangereux - affaiblit celui qui le boit",  1);
-        Item relique  = new Item("relique",  "une relique sacree ancienne - donne une force immense",       2);
-        Item recharge = new Item("recharge", "un cristal qui pulse de la meme energie que le beamer",       1);
+        Item hostie = new Item("hostie", "une hostie sacree mysterieuse - double votre force", 1);
+        Item elixir = new Item("elixir", "un elixir noir puissant - augmente votre capacite", 2);
+        Item herbes = new Item("herbes", "des herbes medicinales - apaisent l esprit", 1);
+        Item painBeni = new Item("painbeni", "un pain beni - apporte du reconfort", 1);
+        Item encens = new Item("encens", "un encens mystique - active les mecanismes anciens", 1);
+        Item poison = new Item("poison", "un liquide toxique dangereux - affaiblit celui qui le boit", 1);
+        Item relique = new Item("relique", "une relique sacree ancienne - donne une force immense", 2);
+        Item recharge = new Item("recharge", "un cristal qui pulse de la meme energie que le beamer", 1);
 
         // Placement des items speciaux
         vChapPrinci.addItem(hostie);
@@ -218,14 +222,27 @@ public class GameModel
         vChambreReliques.addItem(this.beamer);
 
         // Items qui reduisent la suspicion
-        Item voile    = new Item("voile",    "un voile de novice - vous permet de vous fondre dans la masse",  1);
-        Item chapelet = new Item("chapelet", "un chapelet - les soeurs vous font davantage confiance",          1);
-        Item habit    = new Item("habit",    "un habit de soeur complete - personne ne vous remarque",          2);
+        Item voile = new Item("voile", "un voile de novice - vous permet de vous fondre dans la masse", 1);
+        Item chapelet = new Item("chapelet", "un chapelet - les soeurs vous font davantage confiance", 1);
+        Item habit = new Item("habit", "un habit de soeur complete - personne ne vous remarque", 2);
 
         // Placement des items anti-suspicion
         vDortoirOuest.addItem(voile);
         vChapPrinci.addItem(chapelet);
         vRefectoire.addItem(habit);
+
+        // Salles de destination possibles pour la teleportation (sortie exclue)
+        Room[] vTargetRooms = new Room[] {
+            vDortoirEast, vDortoirOuest, vRefectoire, vCuisine, vInfirmerie,
+            vHallCeremonies, vCourIntern, vJardinCentral, vPuitsAncien,
+            vSerreCultivee, vLabyrintheVeg, vAutelExtern, vCabaneJardin,
+            vChapPrinci, vSalleSerments, vBureauMatriarche, vAntichambreSacree,
+            vSalleRituels, vChambreReliques, this.vEscalierCave,
+            this.vCavePrincipale, this.vCloitreIntern, this.vBiblioSacree,
+            this.vSalleCachee, this.vCrypteAncienne, this.vSanctuaireIntern,
+            this.vArchiInterd
+        };
+        vPortailOcculte.setTargetRooms(vTargetRooms);
 
         // Depart du joueur
         this.aPlayer.setCurrentRoom(vDortoirEast);

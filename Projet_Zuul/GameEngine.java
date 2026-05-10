@@ -279,6 +279,29 @@ public class GameEngine
             gui.println("La liberte est a portee de main !");
         }
 
+        // Labyrinthe vers Portail occulte (necessite outil)
+        if (direction.equals("south") && imageActuelle.equals("Labyrinthe.png")) {
+            if (!model.getPlayer().hasItem("outil")) {
+                gui.println("Une grille rouilee barre le passage vers la clairiere.");
+                gui.println("Il vous faut un outil pour la forcer.");
+                return;
+            }
+        }
+
+        // Teleportation si le joueur est dans la TransporterRoom
+        if (model.getCurrentRoom() instanceof TransporterRoom) {
+            TransporterRoom vPortail = (TransporterRoom) model.getCurrentRoom();
+            Room vDestination = vPortail.getRandomRoom();
+            model.getPlayer().setCurrentRoom(vDestination);
+            gui.clear();
+            mapAffichee = false;
+            gui.println("Un tourbillon de lumiere vous engloutit...");
+            gui.println("Vous vous reveillez dans un endroit inconnu.");
+            gui.println("");
+            printLocationInfo();
+            return;
+        }
+
         // Deplacement normal
         Room oldRoom = model.getCurrentRoom();
         model.goRoom(direction);
@@ -401,6 +424,7 @@ public class GameEngine
             return;
         }
 
+        SoundEffect.play("back.wav");
         model.goBack();
         gui.clear();
         mapAffichee = false;
@@ -519,12 +543,12 @@ public class GameEngine
 
             // Items consommables avec effets
             case "hostie" -> { model.getPlayer().increaseMaxWeight(); gui.println("Vous consommez l hostie sacree... votre force double."); }
-            case "elixir" -> { model.getPlayer().addMaxWeight(5);     gui.println("L elixir noir augmente votre capacite."); }
+            case "elixir" -> { model.getPlayer().addMaxWeight(5); gui.println("L elixir noir augmente votre capacite."); }
             case "herbes" -> gui.println("Les herbes apaisent votre esprit.");
             case "painbeni" -> gui.println("Le pain beni vous apporte du reconfort.");
             case "encens" -> gui.println("Une vision etrange traverse votre esprit... vous voyez des visages.");
-            case "poison" ->{ model.getPlayer().reduceMaxWeight(3);  gui.println("Le poison vous affaiblit..."); }
-            case "relique" ->{ model.getPlayer().addMaxWeight(10);    gui.println("La relique vous donne une force immense !"); }
+            case "poison" -> { model.getPlayer().reduceMaxWeight(3); gui.println("Le poison vous affaiblit..."); }
+            case "relique" -> { model.getPlayer().addMaxWeight(10); gui.println("La relique vous donne une force immense !"); }
 
             // Items qui reduisent la suspicion
             case "voile" -> {
@@ -596,6 +620,7 @@ public class GameEngine
             gui.println("Le beamer est epuise. Utilisez une recharge.");
             return;
         }
+        SoundEffect.play("charge.wav");
         model.getBeamer().charge(model.getCurrentRoom());
         gui.println("Le beamer pulse... il a memorise cet endroit.");
     }
@@ -613,6 +638,7 @@ public class GameEngine
             gui.println("Le beamer n est pas charge. Utilisez 'charge' d abord.");
             return;
         }
+        SoundEffect.play("fire.wav");
         Room destination = model.getBeamer().fire();
         model.getPlayer().goRoom(destination);
         gui.println("Le beamer explose en un flash aveuglant...");
